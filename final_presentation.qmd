@@ -19,7 +19,16 @@ bibliography: references.bib
 
 ## Background: Data
 
-My project focuses on the New Zealand Index of Multiple Deprivation (IMD), which was created in 2013 and updated in 2018, which is a ranking of the deprivation of by statistical area in New Zealand. [@exeter2018]
+My project focuses on the New Zealand Index of Multiple Deprivation (IMD), which was created in 2013 and updated in 2018, which is a ranking of the deprivation of by statistical area in New Zealand [@exeter2018]. I also used data from the 2018 New Zealand Census at the same geographic level.
+
+```{r}
+#| echo = FALSE
+
+```
+
+## Background: Index weighting
+
+[![Figure 1. Weights of the IMD [@exeter2018].](IMD_2018_development.png){alt="Weights of the IMD" width="562"}](#0)
 
 <https://quarto.org/docs/presentations/>.
 
@@ -39,5 +48,3 @@ When you click the **Render** button a presentation will be generated that inclu
 ```
 
 ## Works cited
-
-
