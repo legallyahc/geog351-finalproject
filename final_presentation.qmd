@@ -1,0 +1,43 @@
+---
+title: "Final Project"
+subtitle: "GEOG 351: Quantitative Analysis"
+author: "Alice Clauss (260945446)"
+format: revealjs
+editor: visual
+bibliography: references.bib
+---
+
+## Stages
+
+-   Background
+
+-   Methods
+
+-   Results
+
+-   Discussion
+
+## Background: Data
+
+My project focuses on the New Zealand Index of Multiple Deprivation (IMD), which was created in 2013 and updated in 2018, which is a ranking of the deprivation of by statistical area in New Zealand. [@exeter2018]
+
+<https://quarto.org/docs/presentations/>.
+
+## Bullets
+
+When you click the **Render** button a document will be generated that includes:
+
+-   Content authored with markdown
+-   Output from executable code
+
+## Code
+
+When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
+
+```{r}
+1 + 1
+```
+
+## Works cited
+
+
