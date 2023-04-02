@@ -3,8 +3,8 @@ imd18 <- readxl::read_excel("IMD2018.xlsx", sheet = "IMD18")
 imd18
 
 read_bind_csv <- function(x, y){
-  read_csv(y) %>%
-    bind_rows(x, .) -> x
+  x <- read_csv(y) %>%
+    bind_rows(x, .)
 }
 
 # Importing and cleaning education data
