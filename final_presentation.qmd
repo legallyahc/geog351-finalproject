@@ -1,8 +1,10 @@
 ---
-title: "Final Project"
+title: "A geographical statistical approach to the 2018 New Zealand Index of Multiple Deprevation"
 subtitle: "GEOG 351: Quantitative Analysis"
 author: "Alice Clauss (260945446)"
-format: revealjs
+format:
+  revealjs: 
+    theme: simple
 editor: visual
 bibliography: references.bib
 ---
@@ -17,34 +19,113 @@ bibliography: references.bib
 
 -   Discussion
 
+# Background
+
 ## Background: Data
 
-My project focuses on the New Zealand Index of Multiple Deprivation (IMD), which was created in 2013 and updated in 2018, which is a ranking of the deprivation of by statistical area in New Zealand [@exeter2018]. I also used data from the 2018 New Zealand Census at the same geographic level.
+My project focuses on the New Zealand Index of Multiple Deprivation (IMD), which was created in 2013 and updated in 2018, which is a ranking of the deprivation of by data zones in New Zealand [@exeter2018].
 
-```{r}
-#| echo = FALSE
+I also used data from the 2018 New Zealand Census at the statistical area two level, focusing on education qualifications, typical methods of travel to work, and Maori heritage [@statsnz2020].
+
+## Background: Index weighting {.smaller}
+
+::: columns
+::: {.column width="40%"}
+```{r IMD Data, echo=TRUE}
+imd18 <- readxl::read_excel("IMD2018.xlsx", sheet = "IMD18") # Import data
+ncol(imd18) # Number of columns
+nrow(imd18) # Number of entries
+```
+
+-   6180 entries (excluding the column names' row)
+-   these are at the different geographic level than census data
+-   only 15 real variables, with duplicates
+:::
+
+::: {.column width="60%"}
+![Figure 1. Weights of the IMD [@exeter2018].](IMD_2018_development.png)
+:::
+:::
+
+::: notes
+-   Remember the number of entries. This will be important.
+:::
+
+## Background: Census wrangling {.smaller}
+
+```{r Census code nonsense, echo=TRUE}
+# Necessary for importing data nicely
+library(tidyverse)
+
+# Importing and cleaning education data
+education <- read_csv("2018-census-place-summaries-csv/2018-census-place-summaries-education-table2-2018-csv.csv") %>%
+  filter(Area_type == "Statistical Area 2")
+education <- education %>%
+  filter(Maori_ethnic_group_indicator_summary_description == "Total") %>%
+  select(Year, Area_type, Area_code, Highest_qualification_description, Highest_qualification_percent) %>%
+  pivot_wider(names_from = Highest_qualification_description, values_from = Highest_qualification_percent) %>%
+  select(!c(`Not elsewhere included`, Total))
+
+# Importing and cleaning ethnicity data
+ethnicity <- read_csv("2018-census-place-summaries-csv/2018-census-place-summaries-ethnicity-table1-2018-csv.csv") %>%
+  filter(Area_type == "Statistical Area 2")
+ethnicity <- ethnicity %>%
+  select(Year, Area_type, Area_code, Maori_descent_description, Maori_descent_indicator_percent) %>%
+  pivot_wider(names_from = Maori_descent_description, values_from = Maori_descent_indicator_percent) %>%
+  select(!c(`Response unidentifiable`, `Not stated`, `Total`))
+
+# Cleaning transport data, spitting out the percentage of modes used for work, selecting SA2
+transport <- read_csv("2018-census-place-summaries-csv/2018-census-place-summaries-transport-table1-2018-csv.csv")
+transport <- transport %>%
+  select(Year, Area_type, Area_code, `Main_means_of_travel_to_work_description`, `Main_means_of_travel_to_work_percent`) %>%
+  pivot_wider(names_from = `Main_means_of_travel_to_work_description`, values_from = `Main_means_of_travel_to_work_percent`) %>%
+  filter(Area_type == "Statistical Area 2") %>%
+  select(!c(`Did not go to work today`, `Not elsewhere included`))
+
+# Binding the census data together
+vars <- left_join(education, ethnicity, by = "Area_code") %>%
+  left_join(., transport, by = "Area_code")
+vars <- vars %>%
+  select(!c(Year, Year.y, Area_type.y, Area_type.x, Area_type)) %>%
+  rename(
+    `Total Education` = `Total stated.x`,
+    `Year` = Year.x,
+    `Total Ethnicity` = `Total stated.y`,
+    `Total Transport` = `Total stated`
+  )
+
+# Creating groupings for education
+vars <- vars %>%
+  mutate(
+    Secondary = as.numeric(`Level 1 certificate`) + as.numeric(`Level 2 certificate`) + as.numeric(`Level 3 certificate`) + as.numeric(`Overseas secondary school qualification`),
+    `Some University` = as.numeric(`Level 4 certificate`) + as.numeric(`Level 5 diploma`) + as.numeric(`Level 6 diploma`),
+    Tertiary = as.numeric(`Bachelor's degree and level 7 qualification`) + as.numeric(`Post-graduate and honours degrees`),
+    `Post-tertiary` = as.numeric(`Master's degree`) + as.numeric(`Doctorate degree`),
+    `Any University` = as.numeric(`Level 4 certificate`) + as.numeric(`Level 5 diploma`) + as.numeric(`Bachelor's degree and level 7 qualification`) + as.numeric(`Post-graduate and honours degrees`) + as.numeric(`Master's degree`) + as.numeric(`Doctorate degree`)
+    ) %>%
+  select(!c(`Level 1 certificate`, `Level 2 certificate`, `Level 3 certificate`,
+            `Level 4 certificate`, `Level 5 diploma`, `Level 6 diploma`,
+            `Bachelor's degree and level 7 qualification`, `Post-graduate and honours degrees`,
+            `Master's degree`, `Doctorate degree`))
 
 ```
 
-## Background: Index weighting
+::: notes
+-   Looks worse than it is.
+-   Filtering a lot of big data into something usable: percentage values by SA2 of % Maori, % Highest level of education, and % Mode of transport to work.
+-   Gets written to a .csv for more horrors.
+:::
 
-[![Figure 1. Weights of the IMD [@exeter2018].](IMD_2018_development.png){alt="Weights of the IMD" width="562"}](#0)
+## Background: Census wrangling (geospatial) {.smaller}
 
-<https://quarto.org/docs/presentations/>.
+And this is where a lot of problems that have been building come to a head.
 
-## Bullets
+In 2018, Census New Zealand reclassified their census districts to be better equipped for the modern age of data, resizing their census areas into *census mesh blocks*, *statistical area one*, and *statistical area two*. The IMD is based on the old 2013 census standard and provides a key for *statistical area one*, not *statistical area 2*, which is bigger than the IMD blocks.
 
-When you click the **Render** button a document will be generated that includes:
+# Methods
 
--   Content authored with markdown
--   Output from executable code
+## Methods: Ordinal data
 
-## Code
-
-When you click the **Render** button a presentation will be generated that includes both content and the output of embedded code. You can embed code like this:
-
-```{r}
-1 + 1
-```
+The IMD is a form of ordinal level data. Each data zone is ranked 1:6181, with a rank of 1 indicating the highest deprevation and 6181 the lowest. As there are many of these ordinal ranks, I choose to treat it as ratio level data for the purpose of statistical analysis.
 
 ## Works cited
