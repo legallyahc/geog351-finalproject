@@ -565,18 +565,18 @@ Alice Clauss (260945446)
 <p>And this is where a lot of problems that have been building come to a head.</p>
 <div class="fragment">
 <p style="text-align: center;">
-2013 Census Areas = 2013 IMD Data zones
-</p>
+</p><p>2013 Census Areas = 2013 IMD Data zones</p>
+<p></p>
 </div>
 <div class="fragment">
 <p style="text-align: center;">
-2018 Statistical Area 2 <span class="math inline">\(\neq\)</span> 2018 IMD Data zones
-</p>
+</p><p>2018 Statistical Area 2 <span class="math inline">\(\neq\)</span> 2018 IMD Data zones</p>
+<p></p>
 </div>
 <div class="fragment">
 <p style="text-align:center;">
-2018 Statistical Area 2 <span class="math inline">\(&gt;\)</span> 2018 IMD Data zones
-</p>
+</p><p>2018 Statistical Area 2 <span class="math inline">\(&gt;\)</span> 2018 IMD Data zones</p>
+<p></p>
 <aside class="notes">
 <p>In 2018, Census New Zealand reclassified their census districts to be better equipped for the modern age of data, resizing their census areas into <em>census mesh blocks</em>, <em>statistical area one</em>, and <em>statistical area two</em>. The IMD is based on the old 2013 census standard and provides a key for <em>statistical area one</em>, not <em>statistical area 2</em>, which is bigger than the IMD blocks.</p>
 <style type="text/css">
@@ -619,6 +619,41 @@ Alice Clauss (260945446)
 <section id="methods-ordinal-data" class="slide level2">
 <h2>Methods: Ordinal data</h2>
 <p>The IMD is a form of ordinal level data. Each data zone is ranked 1:6181, with a rank of 1 indicating the highest deprivation and 6181 the lowest. As there are many of these ordinal ranks, I choose to treat it as ratio level data for the purpose of statistical analysis.</p>
+</section>
+<section id="methods-variables" class="slide level2 scrollable smaller">
+<h2>Methods: Variables</h2>
+<p>To avoid collinearity between the predictors and the predicted variables, I chose to use the Index of Multiple Deprivation that excludes education data.</p>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>Predicted</strong></p>
+<p><code>RnkIMDNoEdu</code>: Ranked index of multiple deprivation that was made without education data.</p>
+</div><div class="column" style="width:60%;">
+<p><strong>Predictors</strong></p>
+<p><code>No Qualification</code>: % of people with no proof of education</p>
+<p><code>Some-University</code>: % of people who have at least some university education</p>
+<p><code>Post-Tertiary</code>: % of people with post-bachelor’s education</p>
+<p><code>Maori descent</code>: % of people with Maori heritage</p>
+<p><code>Drive a private car, truck, or van</code>: % of people who drive their own vehicle to work</p>
+<p><code>Public bus</code>: % of people who take the bus to work</p>
+<p><code>Bike</code>: % of people who bike to work</p>
+</div>
+</div>
+</section>
+<section id="methods-hypotheses" class="slide level2">
+<h2>Methods: Hypotheses</h2>
+<p style="text-align: center;">
+</p><p><span class="math inline">\(H_0\)</span>: <code>RnkIMDNoEdu</code> is not predicted by the selected variables</p>
+<span class="math inline">\(H_a\)</span>: <code>RnkIMDNoEdu</code> is predicted by the selected variables
+<p></p>
+</section>
+<section id="methods-multiple-linear-regression" class="slide level2">
+<h2>Methods: Multiple Linear Regression</h2>
+</section>
+<section id="methods-assumptions-of-multiple-linear-regression" class="slide level2">
+<h2>Methods: Assumptions of Multiple Linear Regression</h2>
+</section>
+<section id="methods-testing-spatial-relation-with-monrans-i" class="slide level2">
+<h2>Methods: Testing spatial relation with Monran’s I</h2>
 </section>
 <section id="works-cited" class="slide level2 smaller scrollable">
 <h2>Works cited</h2>
