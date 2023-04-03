@@ -116,16 +116,54 @@ vars <- vars %>%
 -   Gets written to a .csv for more horrors.
 :::
 
-## Background: Census wrangling (geospatial) {.smaller}
+## Background: Census wrangling 
 
 And this is where a lot of problems that have been building come to a head.
 
+. . .
+
+<p style="text-align: center;">
+2013 Census Areas = 2013 IMD Data zones
+</p>
+
+. . .
+
+<p style="text-align: center;">
+2018 Statistical Area 2 $\neq$ 2018 IMD Data zones
+</p>
+
+. . .
+
+<p style="text-align:center;">
+2018 Statistical Area 2 $>$ 2018 IMD Data zones
+</p>
+
+::: notes
 In 2018, Census New Zealand reclassified their census districts to be better equipped for the modern age of data, resizing their census areas into *census mesh blocks*, *statistical area one*, and *statistical area two*. The IMD is based on the old 2013 census standard and provides a key for *statistical area one*, not *statistical area 2*, which is bigger than the IMD blocks.
+:::
+
+## Background: Census wrangling {.incremental}
+:::{.incremental}
+- Imported SA2 Boundaries, census data, and IMD18 data
+- Education, Ethnicity, and Transport data was joined to the SA2 Boundaries
+- Using a spatial join (greatest overlap), census data was joined to the IMD18 data.
+:::
+
+. . .
+
+:::columns
+:::{.column width="50%"}
+![](imd_greatestoverlap_sa2/join_sa2.png)
+:::
+::: {.column width="50%"}
+![](imd_greatestoverlap_sa2/spaital_join.png)
+:::
+:::
 
 # Methods
 
 ## Methods: Ordinal data
 
-The IMD is a form of ordinal level data. Each data zone is ranked 1:6181, with a rank of 1 indicating the highest deprevation and 6181 the lowest. As there are many of these ordinal ranks, I choose to treat it as ratio level data for the purpose of statistical analysis.
+The IMD is a form of ordinal level data. Each data zone is ranked 1:6181, with a rank of 1 indicating the highest deprivation and 6181 the lowest. As there are many of these ordinal ranks, I choose to treat it as ratio level data for the purpose of statistical analysis.
 
 ## Works cited
