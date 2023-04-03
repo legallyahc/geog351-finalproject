@@ -59,6 +59,11 @@ vars <- vars %>%
             `Bachelor's degree and level 7 qualification`, `Post-graduate and honours degrees`,
             `Master's degree`, `Doctorate degree`))
 
+vars <- vars %>%
+  mutate(
+    Area_code = as.character(Area_code)
+  )
+
 write_csv(vars, "census.csv")
 
 
@@ -67,3 +72,4 @@ colnames(imd18)
 
 # Maybe can interpolate data from the larger one using the thiessen polygon method?
 max(imd18$Rank_IMD18)
+
