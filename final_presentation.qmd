@@ -190,7 +190,7 @@ To avoid collinearity between the predictors and the predicted variables, I chos
 
 `No Qualification`: % of people with no proof of education
 
-`Some-University`: % of people who have at least some university education
+`Any University`: % of people who have any university education
 
 `Post-Tertiary`: % of people with post-bachelor's education
 

@@ -58,11 +58,28 @@ vars <- vars %>%
             `Level 4 certificate`, `Level 5 diploma`, `Level 6 diploma`,
             `Bachelor's degree and level 7 qualification`, `Post-graduate and honours degrees`,
             `Master's degree`, `Doctorate degree`))
-
+colnames(vars)
+vars
 vars <- vars %>%
   mutate(
-    Area_code = as.character(Area_code)
-  )
+    `No qualification` = as.numeric(`No qualification`),
+    `Overseas secondary school qualification` = as.numeric(`Overseas secondary school qualification`),
+    `Total Education` = as.numeric(`Total Education`),
+    `Maori descent` = as.numeric(`Maori descent`),
+    `No Maori descent` = as.numeric(`No Maori descent`),
+    `Don't know descent` = as.numeric(`Don't know`),
+    `Work at home` = as.numeric(`Work at home`),
+    `Drive a private car, truck, or van` = as.numeric(`Drive a private car, truck, or van`),
+    `Drive a company car, truck, or van` = as.numeric(`Drive a company car, truck, or van`),
+    `Passenger in a car, truck, van, or company bus` = as.numeric(`Passenger in a car, truck, van, or company bus`),
+    `Public bus` = as.numeric(`Public bus`),
+    `Train` = as.numeric(Train),
+    `Bicycle` = as.numeric(Bicycle),
+    `Walk or jog` = as.numeric(`Walk or jog`),
+    `Ferry` = as.numeric(`Ferry`),
+    `Other Transport` = as.numeric(`Other`)
+  ) %>%
+  select(!c(`Other`, `Total`, `Total Ethnicity`, `Total Transport`))
 
 write_csv(vars, "census.csv")
 
@@ -73,3 +90,6 @@ colnames(imd18)
 # Maybe can interpolate data from the larger one using the thiessen polygon method?
 max(imd18$Rank_IMD18)
 
+imd18$RnkIMDNoEdu
+
+# Fucking s2 won't load, so I can't use simple features. ARGH
