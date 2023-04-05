@@ -296,7 +296,37 @@ The significance level of each Spearman correlation is notated at the bottom.
 
 ## Results: Multiple Linear Regression
 
+![](ols_full.png){fig-align="center"}
+
+::: notes
+Collinearity between `Any_University` and `Master_`, removed that
+:::
+
+## Results: Multiple Linear Regression
+
+![](ols_noanyuni.png){fig-align="center"}
+
 ## Results: Assumptions of Multiple Linear Regression
+
+::: columns
+::: {.column width="33%"}
+**Normality of residuals**
+
+![Histogram of residuals](ols_noanyuni_residuals.png)
+:::
+
+::: {.column width="33%"}
+**Heterscedacity**
+:::
+
+::: {.column width="33%"}
+**The other one**
+:::
+:::
+
+::: notes
+Hard right skew in histogram -\> not super normal residuals
+:::
 
 ## Results: Spatial Lag Linear Regression
 
@@ -306,7 +336,7 @@ The significance level of each Spearman correlation is notated at the bottom.
 :::
 
 ::: {.column width="50%"}
-![](ols_spatiallag_noanyuni_residuals.png){fig-align="center" width="1100"}
+![Histogram of residuals](ols_spatiallag_noanyuni_residuals.png){fig-align="center" width="1100"}
 :::
 :::
 
@@ -318,7 +348,7 @@ The significance level of each Spearman correlation is notated at the bottom.
 :::
 
 ::: {.column width="50%"}
-![](ols_spatialerror_noanyuni_residuals.png){fig-align="center"}
+![Histogram of residuals](ols_spatialerror_noanyuni_residuals.png){fig-align="center"}
 :::
 :::
 
