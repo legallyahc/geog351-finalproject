@@ -107,5 +107,5 @@ library(GGally)
 analysis %>%
   select(RnkIMDNoEd, No_qual, Maori, log_maori, Drive_priv, Bus, log_bus, Masters_, AnyUni) %>%
   ggpairs()
-
+colnames(analysis)
 library(tinytex)

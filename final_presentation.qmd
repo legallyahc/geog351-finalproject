@@ -245,16 +245,6 @@ symnum(spearman)
 
 The significance level of each Pearson correlation is notated at the bottom.
 
-## Methods: ?Hypotheses
-
-<p style="text-align: center;">
-
-$H_0$: `RnkIMDNoEdu` is not predicted by the selected variables
-
-$H_a$: `RnkIMDNoEdu` is predicted by the selected variables
-
-</p>
-
 ## Methods: Multiple Linear Regression
 
 ## Methods: Assumptions of Multiple Linear Regression
