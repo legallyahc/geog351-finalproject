@@ -680,7 +680,7 @@ Alice Clauss (260945446)
 <h2>Methods: Transformations</h2>
 
 <img data-src="scattermatrix_transformed.png" class="r-stretch quarto-figure-center"><aside class="notes">
-<p>log transform on Bikes, Maori, and Bus; Bikes and Maori appear normal(ish); bus appears relatively uniform with many similar observations</p>
+<p>log transform on Bikes, Maori, and Bus; Bikes and Maori appear normal(ish) and linear; bus appears relatively uniform with many similar observations</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -777,14 +777,23 @@ attr(,"legend")
 <h2>Results: Multiple Linear Regression</h2>
 
 <img data-src="ols_noanyuni.png" class="r-stretch quarto-figure-center"></section>
-<section id="results-assumptions-of-multiple-linear-regression" class="slide level2">
+<section id="results-assumptions-of-multiple-linear-regression" class="slide level2 smaller">
 <h2>Results: Assumptions of Multiple Linear Regression</h2>
 <div class="columns">
 <div class="column" style="width:33%;">
 <p><strong>Normality of residuals</strong></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
 <p><img data-src="ols_noanyuni_residuals.png"></p>
+<p></p><figcaption>Histogram of residuals, right skewed</figcaption><p></p>
+</figure>
+</div>
 </div><div class="column" style="width:33%;">
-
+<p><strong>Heteroscedasticity</strong></p>
+<p>Results of Breusch-Pagan test reject the null hypothesis of homoscedasticity with a p-value of 0, confirming that the residuals are heteroscedastic.</p>
+</div><div class="column" style="width:33%;">
+<p><strong>No collinearity</strong></p>
+<p>With Geoda’s multicollinearity condition number of 33.22, there may be some collinearity between the predictors, though it improved significantly after the removal of <code>Master_</code>.</p>
 </div>
 </div>
 <aside class="notes">
@@ -814,10 +823,24 @@ attr(,"legend")
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="ols_spatiallag_noanyuni_residuals.png" width="1100"></p>
+<p></p><figcaption>Histogram of residuals</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>For the spatial models, <code>Any_uni</code> was also removed due to its relation to <code>No_qual</code>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="results-spatial-error-linear-regression" class="slide level2">
 <h2>Results: Spatial Error Linear Regression</h2>
@@ -832,10 +855,20 @@ attr(,"legend")
 <div class="quarto-figure quarto-figure-center">
 <figure>
 <p><img data-src="ols_spatialerror_noanyuni_residuals.png"></p>
+<p></p><figcaption>Histogram of residuals</figcaption><p></p>
 </figure>
 </div>
 </div>
 </div>
+</section></section>
+<section>
+<section id="conclusion" class="title-slide slide level1 center">
+<h1>Conclusion</h1>
+
+</section>
+<section id="conclusions" class="slide level2">
+<h2>Conclusions</h2>
+<p>Ultimately, we can conclude that bike riding, Maori ethnicity, lack of educational qualifications, bus ridership, and car driving function well as predictors of depravation, particularly when accounting for the spatial differences in the data.</p>
 </section>
 <section id="works-cited" class="slide level2 smaller scrollable">
 <h2>Works cited</h2>

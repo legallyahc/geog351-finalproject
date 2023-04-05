@@ -236,7 +236,7 @@ To avoid an inherent correlation between the predictors and the response variabl
 ![](scattermatrix_transformed.png){fig-align="center"}
 
 ::: notes
-log transform on Bikes, Maori, and Bus; Bikes and Maori appear normal(ish); bus appears relatively uniform with many similar observations
+log transform on Bikes, Maori, and Bus; Bikes and Maori appear normal(ish) and linear; bus appears relatively uniform with many similar observations
 :::
 
 ## Methods: Analysis {.smaller}
@@ -306,21 +306,25 @@ Collinearity between `Any_University` and `Master_`, removed that
 
 ![](ols_noanyuni.png){fig-align="center"}
 
-## Results: Assumptions of Multiple Linear Regression
+## Results: Assumptions of Multiple Linear Regression {.smaller}
 
 ::: columns
 ::: {.column width="33%"}
 **Normality of residuals**
 
-![Histogram of residuals](ols_noanyuni_residuals.png)
+![Histogram of residuals, right skewed](ols_noanyuni_residuals.png)
 :::
 
 ::: {.column width="33%"}
-**Heterscedacity**
+**Heteroscedasticity**
+
+Results of Breusch-Pagan test reject the null hypothesis of homoscedasticity with a p-value of 0, confirming that the residuals are heteroscedastic.
 :::
 
 ::: {.column width="33%"}
-**The other one**
+**No collinearity**
+
+With Geoda's multicollinearity condition number of 33.22, there may be some collinearity between the predictors, though it improved significantly after the removal of `Master_`.
 :::
 :::
 
@@ -340,6 +344,10 @@ Hard right skew in histogram -\> not super normal residuals
 :::
 :::
 
+::: notes
+For the spatial models, `Any_uni` was also removed due to its relation to `No_qual`.
+:::
+
 ## Results: Spatial Error Linear Regression
 
 ::: columns
@@ -351,5 +359,11 @@ Hard right skew in histogram -\> not super normal residuals
 ![Histogram of residuals](ols_spatialerror_noanyuni_residuals.png){fig-align="center"}
 :::
 :::
+
+# Conclusion
+
+## Conclusions
+
+Ultimately, we can conclude that bike riding, Maori ethnicity, lack of educational qualifications, bus ridership, and car driving function well as predictors of depravation, particularly when accounting for the spatial differences in the data.
 
 ## Works cited
