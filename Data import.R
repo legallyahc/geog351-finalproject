@@ -93,3 +93,19 @@ max(imd18$Rank_IMD18)
 imd18$RnkIMDNoEdu
 
 # Fucking s2 won't load, so I can't use simple features. ARGH
+
+analysis <- read_csv("data.csv")
+
+analysis <- analysis %>%
+  mutate(
+    log_maori = log(Maori),
+    log_bus = log(Public_b_1)
+  )
+
+library(GGally)
+
+analysis %>%
+  select(RnkIMDNoEd, No_qual, Maori, log_maori, Drive_priv, Bus, log_bus, Masters_, AnyUni) %>%
+  ggpairs()
+
+library(tinytex)

@@ -23,7 +23,7 @@ bibliography: references.bib
 
 ## Background: Data
 
-My project focuses on the New Zealand Index of Multiple Deprivation (IMD), which was created in 2013 and updated in 2018, which is a ranking of the deprivation of by data zones in New Zealand [@exeter2018].
+My project focuses on the New Zealand Index of Multiple Deprivation (IMD), which was created in 2013 and updated in 2018, which is a ranking of deprivation by data zones in New Zealand [@exeter2018].
 
 I also used data from the 2018 New Zealand Census at the statistical area two level, focusing on education qualifications, typical methods of travel to work, and Maori heritage [@statsnz2020].
 
@@ -122,36 +122,24 @@ And this is where a lot of problems that have been building come to a head.
 
 . . .
 
-<p style="text-align: center;">
-
-2013 Census Areas = 2013 IMD Data zones
-
-</p>
+2013 Census Areas $=$ 2013 IMD Data zones
 
 . . .
-
-<p style="text-align: center;">
 
 2018 Statistical Area 2 $\neq$ 2018 IMD Data zones
 
-</p>
-
 . . .
 
-<p style="text-align:center;">
-
-2018 Statistical Area 2 $>$ 2018 IMD Data zones
-
-</p>
+2018 Statistical Area 2 $<$ 2018 IMD Data zones
 
 ::: notes
 In 2018, Census New Zealand reclassified their census districts to be better equipped for the modern age of data, resizing their census areas into *census mesh blocks*, *statistical area one*, and *statistical area two*. The IMD is based on the old 2013 census standard and provides a key for *statistical area one*, not *statistical area 2*, which is bigger than the IMD blocks.
 :::
 
-## Background: Census wrangling {.incremental}
+## Background: Census wrangling
 
 ::: incremental
--   Imported SA2 Boundaries, census data, and IMD18 data
+-   Imported SA2 Boundaries, census data, and IMD18 data to ArcGIS Pro
 -   Education, Ethnicity, and Transport data was joined to the SA2 Boundaries
 -   Using a spatial join (greatest overlap), census data was joined to the IMD18 data.
 :::
@@ -160,11 +148,11 @@ In 2018, Census New Zealand reclassified their census districts to be better equ
 
 ::: columns
 ::: {.column width="50%"}
-![](imd_greatestoverlap_sa2/join_sa2.png)
+![](join_sa2.png){fig-align="center"}
 :::
 
 ::: {.column width="50%"}
-![](imd_greatestoverlap_sa2/spaital_join.png)
+![](spaital_join.png){fig-align="center"}
 :::
 :::
 
@@ -172,15 +160,27 @@ In 2018, Census New Zealand reclassified their census districts to be better equ
 
 ## Methods: Ordinal data
 
-The IMD is a form of ordinal level data. Each data zone is ranked 1:6181, with a rank of 1 indicating the highest deprivation and 6181 the lowest. As there are many of these ordinal ranks, I choose to treat it as ratio level data for the purpose of statistical analysis.
+The IMD is a form of ordinal level data. Each data zone is ranked 1:6181, with a rank of 1 indicating the lowest deprivation and 6181 the highest. Thus, to investigate the data I primarily used methods that accepted ordinal data but did use it in a linear regression.
 
-## Methods: Variables {.scrollable .smaller}
+## Methods: Hypotheses {.incremental}
 
-To avoid collinearity between the predictors and the predicted variables, I chose to use the Index of Multiple Deprivation that excludes education data.
+-   There will be greater deprivation with less education qualifications
+
+    -   And the inverse, that there will be less deprivation with more education qualifications
+
+-   There will be less deprivation with greater private car and bicycle use
+
+-   There will be more deprivation with greater bus use
+
+-   There will be greater deprivation in areas of greater Maori ethnicity
+
+## Methods: Variables {.smaller}
+
+To avoid an inherent correlation between the predictors and the response variable, I chose to use the Index of Multiple Deprivation that excludes education data.
 
 ::: columns
 ::: {.column width="40%"}
-**Predicted**
+**Response**
 
 `RnkIMDNoEdu`: Ranked index of multiple deprivation that was made without education data.
 :::
@@ -188,28 +188,71 @@ To avoid collinearity between the predictors and the predicted variables, I chos
 ::: {.column width="60%"}
 **Predictors**
 
-`No Qualification`: % of people with no proof of education
+`No_qual`: % of people with no proof of education
 
-`Any University`: % of people who have any university education
+`AnyUni`: % of people who have any university education
 
-`Post-Tertiary`: % of people with post-bachelor's education
+`Master_`: % of people with post-bachelor's education
 
-`Maori descent`: % of people with Maori heritage
+`Maori`: % of people with Maori heritage
 
-`Drive a private car, truck, or van`: % of people who drive their own vehicle to work
+`Drive_priv`: % of people who drive their own vehicle to work
 
-`Public bus`: % of people who take the bus to work
+`Bus`: % of people who take the bus to work
 
 `Bike`: % of people who bike to work
 :::
 :::
 
-## Methods: Hypotheses
+## Methods: Normality
+
+```{r Scatter plot matrix}
+#| echo = FALSE,
+#| message = FALSE,
+#| warning = FALSE,
+library(GGally)
+analysis <- read_csv("data.csv")
+analysis <- analysis %>% 
+  mutate(
+    log_maori = log(Maori),
+    log_bus = log(Public_b_1)
+  )
+analysis %>% 
+  select(RnkIMDNoEd, No_qual, Maori, log_maori, Drive_priv, Bus, log_bus, Masters_, AnyUni, Bicycle_1) %>% 
+  ggpairs()
+```
+
+::: notes
+Get the matrix from Geoda: pretty :)
+:::
+
+## Methods: Spearman Correlation {.smaller}
+
+```{r spearman}
+spearman <- analysis %>% 
+  select(RnkIMDNoEd, No_qual, log_maori, Drive_priv, log_bus, Masters_, AnyUni, Bicycle1) %>% 
+  cor(method = "spearman")
+```
+
+![](Screenshot%20from%202023-04-04%2020-30-16.png){fig-align="center" width="442"}
+
+Pearson correlation coefficients, which range from $1:-1$.
+
+```{r significance spearman}
+#| echo = FALSE
+symnum(spearman)
+```
+
+The significance level of each Pearson correlation is notated at the bottom.
+
+## Methods: ?Hypotheses
 
 <p style="text-align: center;">
+
 $H_0$: `RnkIMDNoEdu` is not predicted by the selected variables
 
 $H_a$: `RnkIMDNoEdu` is predicted by the selected variables
+
 </p>
 
 ## Methods: Multiple Linear Regression

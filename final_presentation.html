@@ -437,7 +437,7 @@ Alice Clauss (260945446)
 </section>
 <section id="background-data" class="slide level2">
 <h2>Background: Data</h2>
-<p>My project focuses on the New Zealand Index of Multiple Deprivation (IMD), which was created in 2013 and updated in 2018, which is a ranking of the deprivation of by data zones in New Zealand <span class="citation" data-cites="exeter2018">(<a href="#/works-cited" role="doc-biblioref" onclick="">Exeter et al. 2018</a>)</span>.</p>
+<p>My project focuses on the New Zealand Index of Multiple Deprivation (IMD), which was created in 2013 and updated in 2018, which is a ranking of deprivation by data zones in New Zealand <span class="citation" data-cites="exeter2018">(<a href="#/works-cited" role="doc-biblioref" onclick="">Exeter et al. 2018</a>)</span>.</p>
 <p>I also used data from the 2018 New Zealand Census at the statistical area two level, focusing on education qualifications, typical methods of travel to work, and Maori heritage <span class="citation" data-cites="statsnz2020">(<a href="#/works-cited" role="doc-biblioref" onclick="">Stats NZ 2020</a>)</span>.</p>
 </section>
 <section id="background-index-weighting" class="slide level2 smaller">
@@ -564,19 +564,13 @@ Alice Clauss (260945446)
 <h2>Background: Census wrangling</h2>
 <p>And this is where a lot of problems that have been building come to a head.</p>
 <div class="fragment">
-<p style="text-align: center;">
-</p><p>2013 Census Areas = 2013 IMD Data zones</p>
-<p></p>
+<p>2013 Census Areas <span class="math inline">\(=\)</span> 2013 IMD Data zones</p>
 </div>
 <div class="fragment">
-<p style="text-align: center;">
-</p><p>2018 Statistical Area 2 <span class="math inline">\(\neq\)</span> 2018 IMD Data zones</p>
-<p></p>
+<p>2018 Statistical Area 2 <span class="math inline">\(\neq\)</span> 2018 IMD Data zones</p>
 </div>
 <div class="fragment">
-<p style="text-align:center;">
-</p><p>2018 Statistical Area 2 <span class="math inline">\(&gt;\)</span> 2018 IMD Data zones</p>
-<p></p>
+<p>2018 Statistical Area 2 <span class="math inline">\(&lt;\)</span> 2018 IMD Data zones</p>
 <aside class="notes">
 <p>In 2018, Census New Zealand reclassified their census districts to be better equipped for the modern age of data, resizing their census areas into <em>census mesh blocks</em>, <em>statistical area one</em>, and <em>statistical area two</em>. The IMD is based on the old 2013 census standard and provides a key for <em>statistical area one</em>, not <em>statistical area 2</em>, which is bigger than the IMD blocks.</p>
 <style type="text/css">
@@ -592,11 +586,11 @@ Alice Clauss (260945446)
       }</style></aside>
 </div>
 </section>
-<section id="background-census-wrangling-2" class="slide level2 incremental">
+<section id="background-census-wrangling-2" class="slide level2">
 <h2>Background: Census wrangling</h2>
 <div>
 <ul>
-<li class="fragment">Imported SA2 Boundaries, census data, and IMD18 data</li>
+<li class="fragment">Imported SA2 Boundaries, census data, and IMD18 data to ArcGIS Pro</li>
 <li class="fragment">Education, Ethnicity, and Transport data was joined to the SA2 Boundaries</li>
 <li class="fragment">Using a spatial join (greatest overlap), census data was joined to the IMD18 data.</li>
 </ul>
@@ -604,9 +598,17 @@ Alice Clauss (260945446)
 <div class="fragment">
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><img data-src="imd_greatestoverlap_sa2/join_sa2.png"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="join_sa2.png"></p>
+</figure>
+</div>
 </div><div class="column" style="width:50%;">
-<p><img data-src="imd_greatestoverlap_sa2/spaital_join.png"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="spaital_join.png"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -618,32 +620,82 @@ Alice Clauss (260945446)
 </section>
 <section id="methods-ordinal-data" class="slide level2">
 <h2>Methods: Ordinal data</h2>
-<p>The IMD is a form of ordinal level data. Each data zone is ranked 1:6181, with a rank of 1 indicating the highest deprivation and 6181 the lowest. As there are many of these ordinal ranks, I choose to treat it as ratio level data for the purpose of statistical analysis.</p>
+<p>The IMD is a form of ordinal level data. Each data zone is ranked 1:6181, with a rank of 1 indicating the lowest deprivation and 6181 the highest. Thus, to investigate the data I primarily used methods that accepted ordinal data but did use it in a linear regression.</p>
 </section>
-<section id="methods-variables" class="slide level2 scrollable smaller">
+<section id="methods-hypotheses" class="slide level2 incremental">
+<h2>Methods: Hypotheses</h2>
+<ul>
+<li><p>There will be greater deprivation with less education qualifications</p>
+<ul>
+<li>And the inverse, that there will be less deprivation with more education qualifications</li>
+</ul></li>
+<li><p>There will be less deprivation with greater private car and bicycle use</p></li>
+<li><p>There will be more deprivation with greater bus use</p></li>
+<li><p>There will be greater deprivation in areas of greater Maori ethnicity</p></li>
+</ul>
+</section>
+<section id="methods-variables" class="slide level2 smaller">
 <h2>Methods: Variables</h2>
-<p>To avoid collinearity between the predictors and the predicted variables, I chose to use the Index of Multiple Deprivation that excludes education data.</p>
+<p>To avoid an inherent correlation between the predictors and the response variable, I chose to use the Index of Multiple Deprivation that excludes education data.</p>
 <div class="columns">
 <div class="column" style="width:40%;">
-<p><strong>Predicted</strong></p>
+<p><strong>Response</strong></p>
 <p><code>RnkIMDNoEdu</code>: Ranked index of multiple deprivation that was made without education data.</p>
 </div><div class="column" style="width:60%;">
 <p><strong>Predictors</strong></p>
-<p><code>No Qualification</code>: % of people with no proof of education</p>
-<p><code>Some-University</code>: % of people who have at least some university education</p>
-<p><code>Post-Tertiary</code>: % of people with post-bachelor’s education</p>
-<p><code>Maori descent</code>: % of people with Maori heritage</p>
-<p><code>Drive a private car, truck, or van</code>: % of people who drive their own vehicle to work</p>
-<p><code>Public bus</code>: % of people who take the bus to work</p>
+<p><code>No_qual</code>: % of people with no proof of education</p>
+<p><code>AnyUni</code>: % of people who have any university education</p>
+<p><code>Master_</code>: % of people with post-bachelor’s education</p>
+<p><code>Maori</code>: % of people with Maori heritage</p>
+<p><code>Drive_priv</code>: % of people who drive their own vehicle to work</p>
+<p><code>Bus</code>: % of people who take the bus to work</p>
 <p><code>Bike</code>: % of people who bike to work</p>
 </div>
 </div>
 </section>
-<section id="methods-hypotheses" class="slide level2">
-<h2>Methods: Hypotheses</h2>
+<section id="methods-normality" class="slide level2">
+<h2>Methods: Normality</h2>
+
+<img data-src="final_presentation_files/figure-revealjs/Scatter%20plot%20matrix-1.png" width="960" class="r-stretch"><aside class="notes">
+<p>Get the matrix from Geoda: pretty :)</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="methods-spearman-correlation" class="slide level2 smaller">
+<h2>Methods: Spearman Correlation</h2>
+
+<img data-src="Screenshot%20from%202023-04-04%2020-30-16.png" width="442" class="r-stretch quarto-figure-center"><p>Pearson correlation coefficients, which range from <span class="math inline">\(1:-1\)</span>.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>           R N lg_m D lg_b M A B
+RnkIMDNoEd 1                    
+No_qual    . 1                  
+log_maori  , , 1                
+Drive_priv . .      1           
+log_bus      . .      1         
+Masters_   . + ,    . .    1    
+AnyUni     . * ,    . .    * 1  
+Bicycle1                       1
+attr(,"legend")
+[1] 0 ' ' 0.3 '.' 0.6 ',' 0.8 '+' 0.9 '*' 0.95 'B' 1</code></pre>
+</div>
+</div>
+<p>The significance level of each Pearson correlation is notated at the bottom.</p>
+</section>
+<section id="methods-hypotheses-1" class="slide level2">
+<h2>Methods: ?Hypotheses</h2>
 <p style="text-align: center;">
 </p><p><span class="math inline">\(H_0\)</span>: <code>RnkIMDNoEdu</code> is not predicted by the selected variables</p>
-<span class="math inline">\(H_a\)</span>: <code>RnkIMDNoEdu</code> is predicted by the selected variables
+<p><span class="math inline">\(H_a\)</span>: <code>RnkIMDNoEdu</code> is predicted by the selected variables</p>
 <p></p>
 </section>
 <section id="methods-multiple-linear-regression" class="slide level2">
