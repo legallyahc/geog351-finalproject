@@ -99,7 +99,8 @@ analysis <- read_csv("data.csv")
 analysis <- analysis %>%
   mutate(
     log_maori = log(Maori),
-    log_bus = log(Public_b_1)
+    log_bus = log(Bus),
+    log_bike = log(Bicycle1)
   )
 
 library(GGally)

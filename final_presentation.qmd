@@ -162,6 +162,17 @@ In 2018, Census New Zealand reclassified their census districts to be better equ
 
 The IMD is a form of ordinal level data. Each data zone is ranked 1:6181, with a rank of 1 indicating the lowest deprivation and 6181 the highest. Thus, to investigate the data I primarily used methods that accepted ordinal data but did use it in a linear regression.
 
+```{r importing data}
+#| echo = FALSE
+analysis <- read_csv("data.csv")
+analysis <- analysis %>%
+  mutate(
+    log_maori = log(Maori),
+    log_bus = log(Bus),
+    log_bike = log(Bicycle1)
+  )
+```
+
 ## Methods: Hypotheses {.incremental}
 
 -   There will be greater deprivation with less education qualifications
@@ -206,35 +217,57 @@ To avoid an inherent correlation between the predictors and the response variabl
 
 ## Methods: Normality
 
-```{r Scatter plot matrix}
-#| echo = FALSE,
-#| message = FALSE,
-#| warning = FALSE,
-library(GGally)
-analysis <- read_csv("data.csv")
-analysis <- analysis %>% 
-  mutate(
-    log_maori = log(Maori),
-    log_bus = log(Public_b_1)
-  )
-analysis %>% 
-  select(RnkIMDNoEd, No_qual, Maori, log_maori, Drive_priv, Bus, log_bus, Masters_, AnyUni, Bicycle_1) %>% 
-  ggpairs()
-```
+![](scattermatrix_notransform.png){fig-align="center"}
 
 ::: notes
-Get the matrix from Geoda: pretty :)
+-   Uniform IMD
+
+-   Normalish `No Qualifications` and `Any University`
+
+-   Right skewed `Post-tertiary`
+
+-   Left skewed `Drive`
+
+-   Likely logistic `Bicycle`, `Bus`, and `Maori`
 :::
 
-## Methods: Spearman Correlation {.smaller}
+## Methods: Transformations
+
+![](scattermatrix_transformed.png){fig-align="center"}
+
+::: notes
+log transform on Bikes, Maori, and Bus; Bikes and Maori appear normal(ish); bus appears relatively uniform with many similar observations
+:::
+
+## Methods: Analysis {.smaller}
+
+-   Spearman Correlation
+
+    -   ordinal test for correlation within data, ranging from 1 (positively correlated) to -1 (negatively correlated)
+
+-   Moran's I
+
+    -   Test for spatial correlation of the data (run on the response variable)
+
+-   Linear Regression
+
+    -   Requires independence of variables, normality of residuals, and homoscedasticity of residuals,.
+
+    -   Spatial Lag Regression with Queen weighting
+
+    -   Spatial Error Regression with Queen weighting
+
+# Results
+
+## Results: Spearman Correlation {.smaller}
 
 ```{r spearman}
 spearman <- analysis %>% 
-  select(RnkIMDNoEd, No_qual, log_maori, Drive_priv, log_bus, Masters_, AnyUni, Bicycle1) %>% 
+  select(RnkIMDNoEd, No_qual, log_maori, Drive_priv, log_bus, Masters_, AnyUni, log_bike) %>% 
   cor(method = "spearman")
 ```
 
-![](Screenshot%20from%202023-04-04%2020-30-16.png){fig-align="center" width="442"}
+![](Screenshot%20from%202023-04-04%2023-00-46.png){fig-align="center"}
 
 Pearson correlation coefficients, which range from $1:-1$.
 
@@ -243,12 +276,50 @@ Pearson correlation coefficients, which range from $1:-1$.
 symnum(spearman)
 ```
 
-The significance level of each Pearson correlation is notated at the bottom.
+The significance level of each Spearman correlation is notated at the bottom.
 
-## Methods: Multiple Linear Regression
+## Methods: Global Monran's I
 
-## Methods: Assumptions of Multiple Linear Regression
+![](imdnoed_globalmoranI_uni.png){fig-align="center"}
 
-## Methods: Testing spatial relation with Monran's I
+## Methods: Local Monran's I
+
+::: columns
+::: {.column width="50%"}
+![](imdnoed_localmoranI_uni_clustermap.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+![](imdnoed_localmoranI_uni_significance%20map.png)
+:::
+:::
+
+## Results: Multiple Linear Regression
+
+## Results: Assumptions of Multiple Linear Regression
+
+## Results: Spatial Lag Linear Regression
+
+::: columns
+::: {.column width="50%"}
+![](ols_spatiallag_noanyuni.png){fig-align="center" width="1000"}
+:::
+
+::: {.column width="50%"}
+![](ols_spatiallag_noanyuni_residuals.png){fig-align="center" width="1100"}
+:::
+:::
+
+## Results: Spatial Error Linear Regression
+
+::: columns
+::: {.column width="50%"}
+![](ols_spatialerror_noanyuni.png){fig-align="center" width="1000"}
+:::
+
+::: {.column width="50%"}
+![](ols_spatialerror_noanyuni_residuals.png){fig-align="center"}
+:::
+:::
 
 ## Works cited

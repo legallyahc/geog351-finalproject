@@ -656,8 +656,14 @@ Alice Clauss (260945446)
 <section id="methods-normality" class="slide level2">
 <h2>Methods: Normality</h2>
 
-<img data-src="final_presentation_files/figure-revealjs/Scatter%20plot%20matrix-1.png" width="960" class="r-stretch"><aside class="notes">
-<p>Get the matrix from Geoda: pretty :)</p>
+<img data-src="scattermatrix_notransform.png" class="r-stretch quarto-figure-center"><aside class="notes">
+<ul>
+<li><p>Uniform IMD</p></li>
+<li><p>Normalish <code>No Qualifications</code> and <code>Any University</code></p></li>
+<li><p>Right skewed <code>Post-tertiary</code></p></li>
+<li><p>Left skewed <code>Drive</code></p></li>
+<li><p>Likely logistic <code>Bicycle</code>, <code>Bus</code>, and <code>Maori</code></p></li>
+</ul>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -670,35 +676,127 @@ Alice Clauss (260945446)
           display:block!important;
       }</style></aside>
 </section>
-<section id="methods-spearman-correlation" class="slide level2 smaller">
-<h2>Methods: Spearman Correlation</h2>
+<section id="methods-transformations" class="slide level2">
+<h2>Methods: Transformations</h2>
 
-<img data-src="Screenshot%20from%202023-04-04%2020-30-16.png" width="442" class="r-stretch quarto-figure-center"><p>Pearson correlation coefficients, which range from <span class="math inline">\(1:-1\)</span>.</p>
+<img data-src="scattermatrix_transformed.png" class="r-stretch quarto-figure-center"><aside class="notes">
+<p>log transform on Bikes, Maori, and Bus; Bikes and Maori appear normal(ish); bus appears relatively uniform with many similar observations</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="methods-analysis" class="slide level2 smaller">
+<h2>Methods: Analysis</h2>
+<ul>
+<li><p>Spearman Correlation</p>
+<ul>
+<li>ordinal test for correlation within data, ranging from 1 (positively correlated) to -1 (negatively correlated)</li>
+</ul></li>
+<li><p>Moran’s I</p>
+<ul>
+<li>Test for spatial correlation of the data (run on the response variable)</li>
+</ul></li>
+<li><p>Linear Regression</p>
+<ul>
+<li><p>Requires independence of variables, normality of residuals, and homoscedasticity of residuals,.</p></li>
+<li><p>Spatial Lag Regression with Queen weighting</p></li>
+<li><p>Spatial Error Regression with Queen weighting</p></li>
+</ul></li>
+</ul>
+</section></section>
+<section>
+<section id="results" class="title-slide slide level1 center">
+<h1>Results</h1>
+
+</section>
+<section id="results-spearman-correlation" class="slide level2 smaller">
+<h2>Results: Spearman Correlation</h2>
+
+<img data-src="Screenshot%20from%202023-04-04%2023-00-46.png" class="r-stretch quarto-figure-center"><p>Pearson correlation coefficients, which range from <span class="math inline">\(1:-1\)</span>.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>           R N lg_m D lg_b M A B
-RnkIMDNoEd 1                    
-No_qual    . 1                  
-log_maori  , , 1                
-Drive_priv . .      1           
-log_bus      . .      1         
-Masters_   . + ,    . .    1    
-AnyUni     . * ,    . .    * 1  
-Bicycle1                       1
+<pre><code>           R N lg_m D lg_bs M A lg_bk
+RnkIMDNoEd 1                         
+No_qual    . 1                       
+log_maori  , , 1                     
+Drive_priv . .      1                
+log_bus      . .      1              
+Masters_   . + ,    . .     1        
+AnyUni     . * ,    . .     * 1      
+log_bike                        1    
 attr(,"legend")
 [1] 0 ' ' 0.3 '.' 0.6 ',' 0.8 '+' 0.9 '*' 0.95 'B' 1</code></pre>
 </div>
 </div>
-<p>The significance level of each Pearson correlation is notated at the bottom.</p>
+<p>The significance level of each Spearman correlation is notated at the bottom.</p>
 </section>
-<section id="methods-multiple-linear-regression" class="slide level2">
-<h2>Methods: Multiple Linear Regression</h2>
+<section id="methods-global-monrans-i" class="slide level2">
+<h2>Methods: Global Monran’s I</h2>
+
+<img data-src="imdnoed_globalmoranI_uni.png" class="r-stretch quarto-figure-center"></section>
+<section id="methods-local-monrans-i" class="slide level2">
+<h2>Methods: Local Monran’s I</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="imdnoed_localmoranI_uni_clustermap.png"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<p><img data-src="imdnoed_localmoranI_uni_significance%20map.png"></p>
+</div>
+</div>
 </section>
-<section id="methods-assumptions-of-multiple-linear-regression" class="slide level2">
-<h2>Methods: Assumptions of Multiple Linear Regression</h2>
+<section id="results-multiple-linear-regression" class="slide level2">
+<h2>Results: Multiple Linear Regression</h2>
 </section>
-<section id="methods-testing-spatial-relation-with-monrans-i" class="slide level2">
-<h2>Methods: Testing spatial relation with Monran’s I</h2>
+<section id="results-assumptions-of-multiple-linear-regression" class="slide level2">
+<h2>Results: Assumptions of Multiple Linear Regression</h2>
+</section>
+<section id="results-spatial-lag-linear-regression" class="slide level2">
+<h2>Results: Spatial Lag Linear Regression</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="ols_spatiallag_noanyuni.png" width="1000"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="ols_spatiallag_noanyuni_residuals.png" width="1100"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="results-spatial-error-linear-regression" class="slide level2">
+<h2>Results: Spatial Error Linear Regression</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="ols_spatialerror_noanyuni.png" width="1000"></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="ols_spatialerror_noanyuni_residuals.png"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="works-cited" class="slide level2 smaller scrollable">
 <h2>Works cited</h2>
