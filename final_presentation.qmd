@@ -17,7 +17,7 @@ bibliography: references.bib
 
 -   Results
 
--   Discussion
+-   Conclusions
 
 # Background
 
@@ -360,7 +360,7 @@ For the spatial models, `Any_uni` was also removed due to its relation to `No_qu
 :::
 :::
 
-# Conclusion
+# Conclusions
 
 ## Conclusions
 
