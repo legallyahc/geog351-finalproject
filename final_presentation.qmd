@@ -278,11 +278,11 @@ symnum(spearman)
 
 The significance level of each Spearman correlation is notated at the bottom.
 
-## Methods: Global Monran's I
+## Methods: Global Moran's I
 
 ![](imdnoed_globalmoranI_uni.png){fig-align="center"}
 
-## Methods: Local Monran's I
+## Methods: Local Moran's I
 
 ::: columns
 ::: {.column width="50%"}
