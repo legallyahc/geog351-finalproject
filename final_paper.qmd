@@ -6,9 +6,34 @@ format: html
 bibliography: references.bib
 ---
 
-```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
+## Introduction
+
+Short section (1 page). A general statement about which variables you are investigating and how/why existing theory (or your own ideas) predict that they may be related. This section presents your chosen general research questions and explains the general rationale behind them. This section briefly provides the reader with an overview of the study questions; include a very brief summary to what relevant research has been done before
+
+This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprivation in New Zealand. Greater active transportation to school has been linked to higher rates of material and social deprivation in Quebec [@cutumisu2014]. Thus, I believe that active transportation (such as cycling and public transit use) will be linked to a higher rank of multiple deprivation. In the literature, deprivation is typically used as a predictor of educational attainment, rather than education determining deprivation [@cooper2003, @shuttleworth1995]. However, I believe that education and deprivation exhibit a positive feedback (i.e. as educational attainment decreases, material deprivation increases, which decreases educational attainment), and thus chose to investigate to what degree educational attainment influences deprivation. Furthermore, in New Zealand, ethnic-density of Maori has been shown to have a protective effect on health, but this is concealed by the impact of the higher rates of deprivation that Maori experience [@bécares2013]. I wanted to confirm the close link between Maori status and deprivation already established in the literature as well as see if this could be mitigated by education and mode of transportation.
+
+## Methods
+
+This section describes - What is the data set analysed - What is the number of variables used and number of cases (number of points in plots) - Give a detailed definition of all the variables you will analyze (nominal, ordinal, interval, ratio), how is it defined? - What methods will be used for each research objective / hypothesis
+
+### Data sources
+
+```{r IMD18}
+#| collapse: true
+#| output: false
+#| code-fold: true
+#| code-summary: "IMD data import code."
 library(tidyverse)
 imd18 <- readxl::read_excel("IMD2018.xlsx", sheet = "IMD18") # Import data
+```
+
+The 2018 New Zealand Index of Multiple Deprivation (IMD) is a weighted index of deprivation as determined by measures of employment, income, crime, housing, health, education, and access as seen in @fig-IMD [@exeter2018]. It contains variables for ranking by each of these measures and different computations of the IMD that exclude each category (e.g. the IMD without any of the education inputs). For my study I chose to use the Index of Multiple Deprivation that excluded educational data to maintain independence among my variables.
+
+```{r Census data}
+#| collapse: true
+#| output: false
+#| code-fold: true
+#| code-summary: "Census data import and cleaning code."
 
 # Importing and cleaning education data
 education <- read_csv("2018-census-place-summaries-csv/2018-census-place-summaries-education-table2-2018-csv.csv") %>%
@@ -60,133 +85,43 @@ vars <- vars %>%
             `Level 4 certificate`, `Level 5 diploma`, `Level 6 diploma`,
             `Bachelor's degree and level 7 qualification`, `Post-graduate and honours degrees`,
             `Master's degree`, `Doctorate degree`))
-
-analysis <- read_csv("data.csv")
-analysis <- analysis %>%
-  mutate(
-    log_maori = log(Maori),
-    log_bus = log(Bus),
-    log_bike = log(Bicycle1)
-  )
 ```
 
-
-## Introduction
-Short section (1 page). A general statement about which variables you are investigating and how/why existing theory (or your own ideas) predict that they may be related. This section presents your chosen general research questions and explains the general rationale behind them. This section briefly provides the reader with an overview of the study questions; include a very brief summary to what relevant research has been done before
-
-This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprevation in New Zealand. 
-
-
-
-## Methods
-This section describes 
-- What is the data set analysed
-- What is the number of variables used and number of cases (number of points in plots)
-- Give a detailed definition of all the variables you will analyze (nominal, ordinal, interval, ratio), how is it defined?
-- What methods will be used for each research objective / hypothesis
-
-The 2018 New Zealand Index of Multiple Deprivation (IMD), which created a weighted index (see @fig-IMD) using measures of employment, income, crime, housing, health, education, and access [@exeter2018]. The IMD
-
-Census data 
-
-## Results and discussion
-Here you develop, in turn, your hypotheses rela5ng to the data,
-present the results (output tables and graphs) and describe your conclusions or each hypothesis. Deal with each hypothesis fully, in turn, and in some logical sequence. Before you present the results and your interpretation for any test, you should describe each particular hypothesis (which variable are involved in that hypothesis , what is the predicted sign(positive or negative) of effects, etc, what is the test, what does the output tell you?). Then move on to next hypothesis, etc. All graphs, tables and figures should be numbered, referenced in the appropriate place in the text and placed in appendix. You should also include a discussion of post-estimation diagnostics and actions to be taken if basic assumptions are violated. Appendix pages for all graphics are not limited: do not shrink and cram too many plots and output tables per page.
-
-## Conclusions
-comments on difficulties encountered during the investigation and possible avenues for future research.
-
-## Appendices
-
-### Appendix 1. Figures
-
-![Weighting of the 2018 IMD [@exeter2018].](final_pres_wrap/IMD_2018_development.png){#fig-IMD}
-
-### Appendix 2. Code
-
-#### IMD data import
-
-``` r
-library(tidyverse)
-  # For `dplyr`, `readr`, `tidyr`, `tibble`, and `ggplot2`
-imd18 <- readxl::read_excel("IMD2018.xlsx", sheet = "IMD18") 
-  # Import IMD 
-```
-
-#### Census data import and cleaning
-
-``` r
-# Import and clean education data
-education <- read_csv("2018-census-place-summaries-csv/2018-census-place-summaries-education-table2-2018-csv.csv") %>%
-  filter(Area_type == "Statistical Area 2")
-education <- education %>%
-  filter(Maori_ethnic_group_indicator_summary_description == "Total") %>%
-  select(Year, Area_type, Area_code, Highest_qualification_description, Highest_qualification_percent) %>%
-  pivot_wider(names_from = Highest_qualification_description, values_from = Highest_qualification_percent) %>%
-  select(!c(`Not elsewhere included`, Total))
-
-# Importing and cleaning ethnicity data
-ethnicity <- read_csv("2018-census-place-summaries-csv/2018-census-place-summaries-ethnicity-table1-2018-csv.csv") %>%
-  filter(Area_type == "Statistical Area 2")
-ethnicity <- ethnicity %>%
-  select(Year, Area_type, Area_code, Maori_descent_description, Maori_descent_indicator_percent) %>%
-  pivot_wider(names_from = Maori_descent_description, values_from = Maori_descent_indicator_percent) %>%
-  select(!c(`Response unidentifiable`, `Not stated`, `Total`))
-
-# Cleaning transport data, spitting out the percentage of modes used for work, selecting SA2
-transport <- read_csv("2018-census-place-summaries-csv/2018-census-place-summaries-transport-table1-2018-csv.csv")
-transport <- transport %>%
-  select(Year, Area_type, Area_code, `Main_means_of_travel_to_work_description`, `Main_means_of_travel_to_work_percent`) %>%
-  pivot_wider(names_from = `Main_means_of_travel_to_work_description`, values_from = `Main_means_of_travel_to_work_percent`) %>%
-  filter(Area_type == "Statistical Area 2") %>%
-  select(!c(`Did not go to work today`, `Not elsewhere included`))
-
-# Binding the census data together
-vars <- left_join(education, ethnicity, by = "Area_code") %>%
-  left_join(., transport, by = "Area_code")
-vars <- vars %>%
-  select(!c(Year, Year.y, Area_type.y, Area_type.x, Area_type)) %>%
-  rename(
-    `Total Education` = `Total stated.x`,
-    `Year` = Year.x,
-    `Total Ethnicity` = `Total stated.y`,
-    `Total Transport` = `Total stated`
-  )
-
-# Creating groupings for education
-vars <- vars %>%
-  mutate(
-    Secondary = as.numeric(`Level 1 certificate`) + as.numeric(`Level 2 certificate`) + as.numeric(`Level 3 certificate`) + as.numeric(`Overseas secondary school qualification`),
-    `Some University` = as.numeric(`Level 4 certificate`) + as.numeric(`Level 5 diploma`) + as.numeric(`Level 6 diploma`),
-    Tertiary = as.numeric(`Bachelor's degree and level 7 qualification`) + as.numeric(`Post-graduate and honours degrees`),
-    `Post-tertiary` = as.numeric(`Master's degree`) + as.numeric(`Doctorate degree`),
-    `Any University` = as.numeric(`Level 4 certificate`) + as.numeric(`Level 5 diploma`) + as.numeric(`Bachelor's degree and level 7 qualification`) + as.numeric(`Post-graduate and honours degrees`) + as.numeric(`Master's degree`) + as.numeric(`Doctorate degree`)
-    ) %>%
-  select(!c(`Level 1 certificate`, `Level 2 certificate`, `Level 3 certificate`,
-            `Level 4 certificate`, `Level 5 diploma`, `Level 6 diploma`,
-            `Bachelor's degree and level 7 qualification`, `Post-graduate and honours degrees`,
-            `Master's degree`, `Doctorate degree`))
-
-```
-::: {.aside}
-New Zealand uses a unique method of classifying education attainment, with a 7 level certificate / diploma system. I compiled this information to be as comparable as possible to the Canadian system of "Secondary", "Some University", "Bachelors", "Masters", and "Doctorate". I also combined these to make variables that combined any university experience and any university degree past a Bachelors. 
+::: aside
+New Zealand uses a unique method of classifying education attainment, with a 7 level certificate / diploma system. I compiled this information to be as comparable as possible to the Canadian system of "Secondary", "Some University", "Bachelors", "Graduate", and "Post-graduate". I also combined these to make variables that combined any university experience and any university degree past a Bachelors.
 :::
 
-#### Spatially combined data import
+To answer my research questions, I used data from the 2018 New Zealand Census relating to educational attainment, mode of transport to work, and Maori status [@statsnz2020].
 
-``` r
-# Import combined data output from ArcGIS Pro
+```{r setup}
+#| collapse: true
+#| output: false
+#| code-fold: true
+#| code-summary: "Spatially joined data import code."
+
 analysis <- read_csv("data.csv")
-  # Yes, this data set is messy.
-  # Sorry (to myself). 
-
-# Mutate variables that show a logistic distribution
+  # Import spatially joined data
 analysis <- analysis %>%
   mutate(
     log_maori = log(Maori),
     log_bus = log(Bus),
     log_bike = log(Bicycle1)
   )
+  # Logarithmic transform on some variables
 ```
+
+Spatial join
+
+## Results and discussion
+
+Here you develop, in turn, your hypotheses rela5ng to the data, present the results (output tables and graphs) and describe your conclusions or each hypothesis. Deal with each hypothesis fully, in turn, and in some logical sequence. Before you present the results and your interpretation for any test, you should describe each particular hypothesis (which variable are involved in that hypothesis , what is the predicted sign(positive or negative) of effects, etc, what is the test, what does the output tell you?). Then move on to next hypothesis, etc. All graphs, tables and figures should be numbered, referenced in the appropriate place in the text and placed in appendix. You should also include a discussion of post-estimation diagnostics and actions to be taken if basic assumptions are violated. Appendix pages for all graphics are not limited: do not shrink and cram too many plots and output tables per page.
+
+## Conclusions
+
+comments on difficulties encountered during the investigation and possible avenues for future research.
+
+## Appendix 1. Figures
+
+![Weighting of the 2018 IMD [@exeter2018].](final_pres_wrap/IMD_2018_development.png){#fig-IMD}
 
 ## Works Cited

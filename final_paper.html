@@ -125,45 +125,25 @@ div.csl-indent {
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>Short section (1 page). A general statement about which variables you are investigating and how/why existing theory (or your own ideas) predict that they may be related. This section presents your chosen general research questions and explains the general rationale behind them. This section briefly provides the reader with an overview of the study questions; include a very brief summary to what relevant research has been done before</p>
-<p>This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprevation in New Zealand.</p>
+<p>This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprivation in New Zealand. Greater active transportation to school has been linked to higher rates of material and social deprivation in Quebec <span class="citation" data-cites="cutumisu2014">(<a href="#ref-cutumisu2014" role="doc-biblioref">Cutumisu et al. 2014</a>)</span>. Thus, I believe that active transportation (such as cycling and public transit use) will be linked to a higher rank of multiple deprivation. In the literature, deprivation is typically used as a predictor of educational attainment, rather than education determining deprivation <span class="citation" data-cites="cooper2003">Shuttleworth (<a href="#ref-shuttleworth1995" role="doc-biblioref">1995</a>)</span>. However, I believe that education and deprivation exhibit a positive feedback (i.e.&nbsp;as educational attainment decreases, material deprivation increases, which decreases educational attainment), and thus chose to investigate to what degree educational attainment influences deprivation. Furthermore, in New Zealand, ethnic-density of Maori has been shown to have a protective effect on health, but this is concealed by the impact of the higher rates of deprivation that Maori experience <span class="citation" data-cites="bécares2013">(<a href="#ref-bécares2013" role="doc-biblioref">Bécares, Cormack, and Harris 2013</a>)</span>. I wanted to confirm the close link between Maori status and deprivation already established in the literature as well as see if this could be mitigated by education and mode of transportation.</p>
 </section>
-<section id="methods" class="level2">
+<section id="methods" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
 <p>This section describes - What is the data set analysed - What is the number of variables used and number of cases (number of points in plots) - Give a detailed definition of all the variables you will analyze (nominal, ordinal, interval, ratio), how is it defined? - What methods will be used for each research objective / hypothesis</p>
-<p>The 2018 New Zealand Index of Multiple Deprivation (IMD), which created a weighted index (see <a href="#fig-IMD">Figure&nbsp;1</a>) using measures of employment, income, crime, housing, health, education, and access <span class="citation" data-cites="exeter2018">(<a href="#ref-exeter2018" role="doc-biblioref">Exeter et al. 2018</a>)</span>. The IMD</p>
-<p>Census data <strong>?@fig-census-import</strong></p>
-</section>
-<section id="results-and-discussion" class="level2">
-<h2 class="anchored" data-anchor-id="results-and-discussion">Results and discussion</h2>
-<p>Here you develop, in turn, your hypotheses rela5ng to the data, present the results (output tables and graphs) and describe your conclusions or each hypothesis. Deal with each hypothesis fully, in turn, and in some logical sequence. Before you present the results and your interpretation for any test, you should describe each particular hypothesis (which variable are involved in that hypothesis , what is the predicted sign(positive or negative) of effects, etc, what is the test, what does the output tell you?). Then move on to next hypothesis, etc. All graphs, tables and figures should be numbered, referenced in the appropriate place in the text and placed in appendix. You should also include a discussion of post-estimation diagnostics and actions to be taken if basic assumptions are violated. Appendix pages for all graphics are not limited: do not shrink and cram too many plots and output tables per page.</p>
-</section>
-<section id="conclusions" class="level2">
-<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
-<p>comments on difficulties encountered during the investigation and possible avenues for future research.</p>
-</section>
-<section id="appendices" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="appendices">Appendices</h2>
-<section id="appendix-1.-figures" class="level3">
-<h3 class="anchored" data-anchor-id="appendix-1.-figures">Appendix 1. Figures</h3>
-<div id="fig-IMD" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="final_pres_wrap/IMD_2018_development.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;1: Weighting of the 2018 IMD <span class="citation" data-cites="exeter2018">(<a href="#ref-exeter2018" role="doc-biblioref">Exeter et al. 2018</a>)</span>.</figcaption><p></p>
-</figure>
+<section id="data-sources" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="data-sources">Data sources</h3>
+<div class="cell">
+<details>
+<summary>IMD data import code.</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>imd18 <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"IMD2018.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"IMD18"</span>) <span class="co"># Import data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
-</section>
-<section id="appendix-2.-code" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="appendix-2.-code">Appendix 2. Code</h3>
-<section id="imd-data-import" class="level4">
-<h4 class="anchored" data-anchor-id="imd-data-import">IMD data import</h4>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For `dplyr`, `readr`, `tidyr`, `tibble`, and `ggplot2`</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>imd18 <span class="ot">&lt;-</span> readxl<span class="sc">::</span><span class="fu">read_excel</span>(<span class="st">"IMD2018.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"IMD18"</span>) </span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Import IMD </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</section>
-<section id="census-data-import-and-cleaning" class="level4 page-columns page-full">
-<h4 class="anchored" data-anchor-id="census-data-import-and-cleaning">Census data import and cleaning</h4>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import and clean education data</span></span>
+<p>The 2018 New Zealand Index of Multiple Deprivation (IMD) is a weighted index of deprivation as determined by measures of employment, income, crime, housing, health, education, and access as seen in <a href="#fig-IMD">Figure&nbsp;1</a>. It contains variables for ranking by each of these measures and different computations of the IMD that exclude each category (e.g.&nbsp;the IMD without any of the education inputs). For my study I chose to use the Index of Multiple Deprivation that excluded educational data to maintain independence among my variables.</p>
+<div class="cell">
+<details>
+<summary>Census data import and cleaning code.</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing and cleaning education data</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>education <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"2018-census-place-summaries-csv/2018-census-place-summaries-education-table2-2018-csv.csv"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Area_type <span class="sc">==</span> <span class="st">"Statistical Area 2"</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>education <span class="ot">&lt;-</span> education <span class="sc">%&gt;%</span></span>
@@ -213,26 +193,45 @@ div.csl-indent {
 <span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">Level 4 certificate</span><span class="st">`</span>, <span class="st">`</span><span class="at">Level 5 diploma</span><span class="st">`</span>, <span class="st">`</span><span class="at">Level 6 diploma</span><span class="st">`</span>,</span>
 <span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">Bachelor's degree and level 7 qualification</span><span class="st">`</span>, <span class="st">`</span><span class="at">Post-graduate and honours degrees</span><span class="st">`</span>,</span>
 <span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>            <span class="st">`</span><span class="at">Master's degree</span><span class="st">`</span>, <span class="st">`</span><span class="at">Doctorate degree</span><span class="st">`</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
 
 <div class="no-row-height column-margin column-container"><div class="">
-<p>New Zealand uses a unique method of classifying education attainment, with a 7 level certificate / diploma system. I compiled this information to be as comparable as possible to the Canadian system of “Secondary”, “Some University”, “Bachelors”, “Masters”, and “Doctorate”. I also combined these to make variables that combined any university experience and any university degree past a Bachelors.</p>
-</div></div></section>
-<section id="spatially-combined-data-import" class="level4">
-<h4 class="anchored" data-anchor-id="spatially-combined-data-import">Spatially combined data import</h4>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import combined data output from ArcGIS Pro</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>analysis <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data.csv"</span>)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Yes, this data set is messy.</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Sorry (to myself). </span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Mutate variables that show a logistic distribution</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>analysis <span class="ot">&lt;-</span> analysis <span class="sc">%&gt;%</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_maori =</span> <span class="fu">log</span>(Maori),</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_bus =</span> <span class="fu">log</span>(Bus),</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_bike =</span> <span class="fu">log</span>(Bicycle1)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>New Zealand uses a unique method of classifying education attainment, with a 7 level certificate / diploma system. I compiled this information to be as comparable as possible to the Canadian system of “Secondary”, “Some University”, “Bachelors”, “Graduate”, and “Post-graduate”. I also combined these to make variables that combined any university experience and any university degree past a Bachelors.</p>
+</div></div><p>To answer my research questions, I used data from the 2018 New Zealand Census relating to educational attainment, mode of transport to work, and Maori status <span class="citation" data-cites="statsnz2020">(<a href="#ref-statsnz2020" role="doc-biblioref">Stats NZ 2020</a>)</span>.</p>
+<div class="cell">
+<details>
+<summary>Spatially joined data import code.</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>analysis <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Import spatially joined data</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>analysis <span class="ot">&lt;-</span> analysis <span class="sc">%&gt;%</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_maori =</span> <span class="fu">log</span>(Maori),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_bus =</span> <span class="fu">log</span>(Bus),</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">log_bike =</span> <span class="fu">log</span>(Bicycle1)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Logarithmic transform on some variables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Spatial join</p>
 </section>
 </section>
+<section id="results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="results-and-discussion">Results and discussion</h2>
+<p>Here you develop, in turn, your hypotheses rela5ng to the data, present the results (output tables and graphs) and describe your conclusions or each hypothesis. Deal with each hypothesis fully, in turn, and in some logical sequence. Before you present the results and your interpretation for any test, you should describe each particular hypothesis (which variable are involved in that hypothesis , what is the predicted sign(positive or negative) of effects, etc, what is the test, what does the output tell you?). Then move on to next hypothesis, etc. All graphs, tables and figures should be numbered, referenced in the appropriate place in the text and placed in appendix. You should also include a discussion of post-estimation diagnostics and actions to be taken if basic assumptions are violated. Appendix pages for all graphics are not limited: do not shrink and cram too many plots and output tables per page.</p>
+</section>
+<section id="conclusions" class="level2">
+<h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
+<p>comments on difficulties encountered during the investigation and possible avenues for future research.</p>
+</section>
+<section id="appendix-1.-figures" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-1.-figures">Appendix 1. Figures</h2>
+<div id="fig-IMD" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="final_pres_wrap/IMD_2018_development.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Weighting of the 2018 IMD <span class="citation" data-cites="exeter2018">(<a href="#ref-exeter2018" role="doc-biblioref">Exeter et al. 2018</a>)</span>.</figcaption><p></p>
+</figure>
+</div>
 </section>
 <section id="works-cited" class="level2 unnumbered">
 
@@ -240,8 +239,23 @@ div.csl-indent {
 </section>
 
 <div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">Works Cited</h2><div id="refs" class="references csl-bib-body hanging-indent" role="list">
+<div id="ref-bécares2013" class="csl-entry" role="listitem">
+Bécares, Laia, Donna Cormack, and Ricci Harris. 2013. <span>“Ethnic Density and Area Deprivation: Neighbourhood Effects on M<span>ā</span>ori Health and Racial Discrimination in Aotearoa/New Zealand.”</span> <em>Social Science &amp; Medicine</em> 88 (July): 76–82. <a href="https://doi.org/10.1016/j.socscimed.2013.04.007">https://doi.org/10.1016/j.socscimed.2013.04.007</a>.
+</div>
+<div id="ref-cooper2003" class="csl-entry" role="listitem">
+Cooper, Mark, Lester Lloyd-Reason, and Stuart Wall. 2003. <span>“Social Deprivation and Educational Underachievement: Lessons from London.”</span> <em>Education + Training</em> 45 (2): 79–88. <a href="https://doi.org/10.1108/00400910310464053">https://doi.org/10.1108/00400910310464053</a>.
+</div>
+<div id="ref-cutumisu2014" class="csl-entry" role="listitem">
+Cutumisu, Nicoleta, Ariane Bélanger-Gravel, Marilie Laferté, François Lagarde, Jean-Frédéric Lemay, and Lise Gauvin. 2014. <span>“Influence of Area Deprivation and Perceived Neighbourhood Safety on Active Transport to School Among Urban Quebec Preadolescents.”</span> <em>Canadian Journal of Public Health = Revue Canadienne de Santé Publique</em> 105 (5): e376–82. <a href="https://doi.org/10.17269/cjph.105.4561">https://doi.org/10.17269/cjph.105.4561</a>.
+</div>
 <div id="ref-exeter2018" class="csl-entry" role="listitem">
 Exeter, Daniel John, Arier Chi Lun Lee, Jinfeng Zhao, Sue Crengle, Annie Chiang, and Michael Browne. 2018. <span>“2018 Index of Multiple Deprivation.”</span> <a href="https://hgd.auckland.ac.nz/imd18/">https://hgd.auckland.ac.nz/imd18/</a>.
+</div>
+<div id="ref-shuttleworth1995" class="csl-entry" role="listitem">
+Shuttleworth, Ian. 1995. <span>“The Relationship Between Social Deprivation, as Measured by Individual Free School Meal Eligibility, and Educational Attainment at GCSE in Northern Ireland: A Preliminary Investigation.”</span> <em>British Educational Research Journal</em> 21 (4): 487–504. <a href="https://doi.org/10.1080/0141192950210404">https://doi.org/10.1080/0141192950210404</a>.
+</div>
+<div id="ref-statsnz2020" class="csl-entry" role="listitem">
+Stats NZ. 2020. <span>“2018 Census Place Summaries.”</span> <a href="https://www.stats.govt.nz/tools/2018-census-place-summaries/">https://www.stats.govt.nz/tools/2018-census-place-summaries/</a>.
 </div>
 </div></section></div></main>
 <!-- /main column -->
