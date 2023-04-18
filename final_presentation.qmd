@@ -107,7 +107,6 @@ vars <- vars %>%
             `Level 4 certificate`, `Level 5 diploma`, `Level 6 diploma`,
             `Bachelor's degree and level 7 qualification`, `Post-graduate and honours degrees`,
             `Master's degree`, `Doctorate degree`))
-
 ```
 
 ::: notes

@@ -110,3 +110,5 @@ analysis %>%
   ggpairs()
 colnames(analysis)
 library(tinytex)
+
+library(distill)
