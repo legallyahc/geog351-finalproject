@@ -1,0 +1,21 @@
+---
+title: "A geographical statistical approach to the 2018 New Zealand Index of Multiple Deprevation"
+description: | 
+  Scientific and technical writing, native to the web
+date: April 20, 2023
+author:
+  - first_name: "Alice"
+    last_name: "Clauss"
+    url: https://github.com/legallyahc
+bibliography: references.bib
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+Short section (1 page). A general statement about which variables you are investigating and how/why existing theory (or your own ideas) predict that they may be related. This section presents your chosen general research questions and explains the general rationale behind them. This section briefly provides the reader with an overview of the study questions; include a very brief summary to what relevant research has been done before
+
+##

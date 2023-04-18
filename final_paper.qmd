@@ -1,28 +1,25 @@
 ---
-title: "Final Project"
+title: "A geographical statistical approach to the 2018 New Zealand Index of Multiple Deprevation"
 subtitle: "GEOG 351: Quantitative Analysis"
 author: "Alice Clauss (260945446)"
 format: html
 editor: visual
 ---
 
-## Quarto
+## Introduction
+Short section (1 page). A general statement about which variables you are investigating and how/why existing theory (or your own ideas) predict that they may be related. This section presents your chosen general research questions and explains the general rationale behind them. This section briefly provides the reader with an overview of the study questions; include a very brief summary to what relevant research has been done before
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+## Methods
+This section describes 
+- What is the data set analysed
+- What is the number of variables used and number of cases (number of points in plots)
+- Give a detailed definition of all the variables you will analyze (nominal, ordinal, interval, ratio), how is it defined?
+- What methods will be used for each research objective / hypothesis
 
-## Running Code
+## Results and discussion
+Here you develop, in turn, your hypotheses rela5ng to the data,
+present the results (output tables and graphs) and describe your conclusions or each hypothesis. Deal with each hypothesis fully, in turn, and in some logical sequence. Before you present the results and your interpretation for any test, you should describe each particular hypothesis (which variable are involved in that hypothesis , what is the predicted sign(positive or negative) of effects, etc, what is the test, what does the output tell you?). Then move on to next hypothesis, etc. All graphs, tables and figures should be numbered, referenced in the appropriate place in the text and placed in appendix. You should also include a discussion of post-estimation diagnostics and actions to be taken if basic assumptions are violated. Appendix pages for all graphics are not limited: do not shrink and cram too many plots and output tables per page.
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+## Conclusions
+comments on difficulties encountered during the investigation and possible avenues for future research.
 
-```{r}
-1 + 1
-```
-
-You can add options to executable code like this
-
-```{r}
-#| echo: false
-2 * 2
-```
-
-The `echo: false` option disables the printing of code (only output is displayed).

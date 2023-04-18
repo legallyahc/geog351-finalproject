@@ -251,7 +251,7 @@ log transform on Bikes, Maori, and Bus; Bikes and Maori appear normal(ish) and l
 
 -   Linear Regression
 
-    -   Requires independence of variables, normality of residuals, and homoscedasticity of residuals,.
+    -   Requires independence of variables, normality of residuals, and homoscedasticity of residuals
 
     -   Spatial Lag Regression with Queen weighting
 
