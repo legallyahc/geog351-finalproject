@@ -10,6 +10,7 @@ format:
     toc-location: left
     link-external-icon: true
     link-external-newwindow: true
+    html-math-method: katex
 bibliography: references.bib
 ---
 
@@ -17,7 +18,7 @@ View the source code for this project [here](https://github.com/legallyahc/geog3
 
 ## Introduction
 
-This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprivation in New Zealand. Greater active transportation to school has been linked to higher rates of material and social deprivation in Quebec [@cutumisu2014]. Thus, I believe that greater use of active transportation (such as cycling and public transit use) will be linked to a less deprivation. Furthermore, increased car usage can indiciate a greater lever of affluence (due to the money required for maintenance and gas), leading to my prediction that greater private car usage will lead to lower deprivation. In the literature, deprivation is typically used as a predictor of educational attainment, rather than education determining deprivation [@cooper2003; @shuttleworth1995]. However, I believe that education and deprivation exhibit a positive feedback (i.e. as educational attainment decreases, material deprivation increases, which decreases educational attainment), and thus chose to investigate to what degree educational attainment influences deprivation. In New Zealand, ethnic-density of Maori has been shown to have a protective effect on health, but this is concealed by the impact of the higher rates of deprivation that Maori experience [@bécares2013]. I wanted to confirm the close link between Maori status and deprivation already established in the literature as well as see if this could be mitigated by education and mode of transportation. With my focus on mode of transport, education, and Maori status, I would like to see how well they predict deprivation and which predictors are most influential. As deprivation is often spatially autocorreleated, I will investigate if this holds for New Zealand [@bécares2013].
+This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprivation in New Zealand. Greater active transportation to school has been linked to higher rates of material and social deprivation in Quebec [@cutumisu2014]. Thus, I believe that greater use of active transportation (such as cycling and public transit use) will be linked to a more deprivation. Furthermore, increased car usage can indiciate a greater lever of affluence (due to the money required for maintenance and gas), leading to my prediction that greater private car usage will lead to lower deprivation. In the literature, deprivation is typically used as a predictor of educational attainment, rather than education determining deprivation [@cooper2003; @shuttleworth1995]. However, I believe that education and deprivation exhibit a positive feedback (i.e. as educational attainment decreases, material deprivation increases, which decreases educational attainment), and thus chose to investigate to what degree educational attainment influences deprivation. In New Zealand, ethnic-density of Maori has been shown to have a protective effect on health, but this is concealed by the impact of the higher rates of deprivation that Maori experience [@bécares2013]. I wanted to confirm the close link between Maori status and deprivation already established in the literature as well as see if this could be mitigated by education and mode of transportation. With my focus on mode of transport, education, and Maori status, I would like to see how well they predict deprivation and which predictors are most influential. As deprivation is often spatially autocorreleated, I will investigate if this holds for New Zealand [@bécares2013].
 
 ## Methods
 
@@ -184,8 +185,6 @@ The final multiple linear regression model will be run in GeoDa using a Queen we
 
 ## Results and discussion
 
-Here you develop, in turn, your hypotheses rela5ng to the data, present the results (output tables and graphs) and describe your conclusions or each hypothesis. Deal with each hypothesis fully, in turn, and in some logical sequence. Before you present the results and your interpretation for any test, you should describe each particular hypothesis (which variable are involved in that hypothesis , what is the predicted sign(positive or negative) of effects, etc, what is the test, what does the output tell you?). Then move on to next hypothesis, etc. All graphs, tables and figures should be numbered, referenced in the appropriate place in the text and placed in appendix. You should also include a discussion of post-estimation diagnostics and actions to be taken if basic assumptions are violated. Appendix pages for all graphics are not limited: do not shrink and cram too many plots and output tables per page.
-
 ### Spearman Correlation
 
 ```{STATA}
@@ -225,16 +224,15 @@ The initial regression model is visible at @fig-ols1. Here, both `Drive_priv` an
 | `no_qual`   | 0.4358954         |
 | `log_bus`   | 0.3789292         |
 | `log_maori` | 0.5379429         |
-
 :::
+
 ::: {.column width="5%"}
 :::
 
 ::: {.column width="50%"}
-We can now consider the combined influence of mode of transport, educational attainment, and Maori status on deprivation. Maori status has the greatest effect on deprivation with a $\beta$ coefficient of $0.54$, while a lack of educational qualifications is still influential with a $\beta$ coefficient of $0.44$. Bus ridership to work, while less important, is influential with a $\beta$ coefficient of $0.38$. Unlike the Pearson correlation, however, an increase in bus ridership is related to a greater rate of deprivation in the linear regression model.
+We can now consider the combined influence of mode of transport, educational attainment, and Maori status on deprivation. Maori status has the greatest effect on deprivation with a $\beta$ coefficient of $0.54$, while a lack of educational qualifications is still influential with a $\beta$ coefficient of $0.44$. Bus ridership to work, while less important, is influential with a $\beta$ coefficient of $0.38$. Unlike the Pearson correlation, however, an increase in bus ridership is related to a greater rate of deprivation in the linear regression model, but maintains my original prediction that greater active transportation would be linked to higher rates of deprivation.
 :::
 :::
-
 
 #### Assumptions
 
@@ -255,13 +253,17 @@ We can confirm that there is no autocorrelation between our variables by checkin
 
 ### Moran's I
 
-Words
+@fig-globali displays the Global Moran's I scatter plot, with an I of $0.668$ using a Queen weights matrix for `RnkIMDNoEd`. This has a p-value of 0.001 with 999 random permutations ([@fig-moransig]), indicating that there is a significant spatial correlation to deprivation in New Zealand. This is visible in the local clusters of deprivation ([@fig-localiclusters]), many of which are highly statistically significant ([@fig-localisig]). Thus we can confirm our hypothesis that deprivation in New Zealand is spatially correlated.
 
 ### Spatial Multiple Linear Regression
 
+Knowing that deprivation in New Zealand is spatially correlated, we can improve our linear regression model. While running the previous regression model in GeoDa produces a different output (as it does not exclude the same values as STATA), the outputs of the spatial correlation tests are still valid. @fig-spatial displays the values and significance of the Lagrange multipliers for spatial lag and spatial error, leading me to choose a spatial lag multiple linear regression due to its greater Robust LM value (395, $p=0.000$ to Spatial Errror's 129, $p=0.000$).
+
+The spatial lag multiple linear regression ([@fig-spatiallag]) was conducted with a Queen weight matrix with any isolates removed on the same variables as the final multiple linear regression (`No_qual`, `log_maori`, and `log_bike`). The spatial lag linear regression model has an $R^2$ of $0.705$ and a $\sqrt{MSE}$ of $969$, considerable improvements from the standard linear regression. However, the model is still heteroskedastic, rejecting the null hypothesis of homoskedasticity in the Breusch-Pagan test, nor are the residuals normally distributed. However, the model does show the significant impact that the spatial distribution has on deprivation in New Zealand, with each other predictor variable having a z-value of $\approx 22.5$.
+
 ## Conclusions
 
-comments on difficulties encountered during the investigation and possible avenues for future research.
+Links to deprivation in New Zealand have been investigated before but have taken the form of deprivation's impacts on other aspects of life. Investigating potential linkages to deprivation can allow us to better consider the patterns of who experience the most deprivation, which are often those least able to cope with it. This investigation involved some ad-hoc change of procedures, particularly in the linking of the 2018 New Zealand Index of Multiple Deprivation and Census New Zealand's 2018 SA2 data. While the original 2013 IMD had the same geographic zones as the 2013 New Zealand Census, in 2018 New Zealand updated its census units and structures to allow for more data to be available to researchers. However, the 2018 IMD, to maintain continuity with the 2013 IMD, did not change its geographic units. My oversight of these differences required me to perform a spatial join in ArcGIS Pro, which was not the ideal way to combine these datasets. With more time or experience using a Thiessen polygon construction or Inverse Distance Weighting method to interpolate the census data to the IMD data would have been ideal. With the linkage of lack of educational credentials, bike usage, and Maori status to deprivation, a deeper dive can be made into how these connections have come to be or what mechanisms maintain them.
 
 ## Appendix 1. Figures
 
@@ -288,5 +290,17 @@ After transformation, `RnkIMDNoEd` is no longer normal. As some entries for `mao
 ![Results of the Breusch--Pagan/Cook--Weisberg test for heteroskedasticity from STATA.](hettest.png){#fig-hettest}
 
 ![Variance inflation factor output of the final linear regression model.](vif.png){#fig-vif}
+
+![Global Moran's I of `RnkIMDNoEd` from Geoda.](imdnoed_globalmoranI_uni.png){#fig-globali}
+
+![Random significance testing output of the Global Moran's I of `RnkIMDNoEd` from GeoDa.](Global%20Moran's%20I%20significance%20output.png){#fig-moransig}
+
+![Local Moran's I cluster map from GeoDa.](imdnoed_localmoranI_uni_clustermap.png){#fig-localiclusters}
+
+![Local Moran's I cluster significance map from GeoDa.](imdnoed_localmoranI_uni_significance%20map.png){#fig-localisig}
+
+![Based on the Queen weight matrix, the outputs and values of the Lagrange Multipliers for the final multiple linear regression model.](Spatial%20model%20stuff.png){#fig-spatial}
+
+![Outputs of the Spatial Lag Linear Regression model in GeoDa.](Spatial%20lag%20regression.png){#fig-spatiallag}
 
 ## Works Cited
