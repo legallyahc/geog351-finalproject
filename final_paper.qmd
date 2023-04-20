@@ -21,8 +21,6 @@ This paper ventures to investigate the links between education, mode of transpor
 
 ## Methods
 
-This section describes - What is the data set analysed - What is the number of variables used and number of cases (number of points in plots) - Give a detailed definition of all the variables you will analyze (nominal, ordinal, interval, ratio), how is it defined? - What methods will be used for each research objective / hypothesis
-
 ### Data sources
 
 ```{r IMD18}
@@ -172,8 +170,6 @@ All relationships will be investigated through a Spearman correlation and a mult
 
 The Spearman Correlation is a non-parametric test of correlation, requiring only that each sample is independent from each other. It accepts Ordinal, Interval, and Ratio level data. It will be run on each predictor variable and the response variable to assess the predictors' correlation to the response and any potential collinearity. I also used Bonferroni p-value correction to correct the significance value of any of the many comparisons I made.
 
-If collinearity appears to be an issue, the relationship between the predictors will be further investigated with a Pearson Correlation test, which requires that the data is independent, interval or ratio level, and exhibit a linear relationship.
-
 #### Multiple Linear Regression
 
 The relationship between the variables will then be investigated with an Ordinary Least Squares multiple linear regression, with the predictor variables determining the response. This assumes that the relationship is linear, the predictors are normally distributed, there is no collinearity among the predictors, the residuals are homoskedastic, and the residuals are normally distributed. We can ignore the requirement of normality for the predictors due to the large number of observations and will test our assumptions after the model.
@@ -199,11 +195,69 @@ Here you develop, in turn, your hypotheses rela5ng to the data, present the resu
 spearman rnkimdnoed no_qual drive_priv log_bus masters_ anyuni log_maori log_bike, stats(rho obs p) bonferroni
 ```
 
-The results of the Spearman correlation are visible in @fig-pearsoncorr. As we can see from the STATA output, the comparison is limited by the number of observations in `log_bus` (4669 observations). Every corresponding correlation is significant at the 95% confidence level aside from `log_maori` and `log_bike`.
+The results of the Spearman correlation are visible in @fig-spearmancorr. As we can see from the STATA output, the comparison is limited by the number of observations in `log_bus` (4669 observations). Every corresponding correlation is significant at the 95% confidence level aside from `log_maori` and `log_bike`. However, `AnyUni` and `Master_` have a Pearson correlation of more than $0.9$ with `No_qual`, which indicates that these variables are likely autocorrelated. As `No_qual` has the greatest correlation with `RnkIMDNoEd`, it will preserved while `AnyUni` and `Master_` are excluded from further analysis.
 
 ::: aside
-After a logistic transformation, any zero values receive a value of $-\infty$.
+After a logistic transformation any zero values receive a value of $-\infty$ and were thus excluded from analysis.
 :::
+
+From our Spearman correlation, we can conclude that a higher rate of no of educational qualifications is related to a higher rate of deprivation, while a greater amount of any university education is correlated to a lower rate of deprivation. Somewhat confusingly, any amount of university education is more correlated to a lower rate of deprivation than only those with a graduate degree or beyond (Spearman correlation coefficient of $-0.5622$ to $-0.5244$). Maori status is significantly related to a higher rate of deprivation with a coefficient of $0.6945$. In contrast to my original hypothesis, greater modal share of driving a private vehicle to work is related to a higher rate of deprivation (coefficient of $0.3521$). Active transportation (in the form of riding a bike or taking a public bus) is linked to lower rates of deprivation, with the log transform of these variables having a correlation coefficient of $-0.0472$ and $-0.0792$ respectively.
+
+### Multiple Linear Regression
+
+#### Models
+
+```{STATA}
+#| collapse: true
+#| code-fold: true
+#| code-summary: "STATA Multiple Linear Regression commands."
+regress rnkimdnoed no_qual drive_priv log_bus log_maori log_bike, beta
+regress rnkimdnoed no_qual log_bus log_maori log_bike, beta
+regress rnkimdnoed no_qual log_bus log_maori, beta
+```
+
+The initial regression model is visible at @fig-ols1. Here, both `Drive_priv` and `log_bike` are not significant, though `Drive_priv` is more so, and was thus excluded from the next model, visible in @fig-ols2. As `log_bike` still has an insignificant p-value, and was excluded. The final model, visible in @fig-ols3, has an adjusted $R^2$ of $0.6156$ and a $\sqrt{MSE}$ of $1118.6$. I believe that this is a reasonable model for an ordinal response variable, with a relatively high $R^2$ though the $\sqrt{MSE}$ is rather high because of the uniformly distributed response variable.
+
+::: columns
+::: {.column width="45%"}
+| Predictors  | Beta Coefficients |
+|-------------|-------------------|
+| `no_qual`   | 0.4358954         |
+| `log_bus`   | 0.3789292         |
+| `log_maori` | 0.5379429         |
+
+:::
+::: {.column width="5%"}
+:::
+
+::: {.column width="50%"}
+We can now consider the combined influence of mode of transport, educational attainment, and Maori status on deprivation. Maori status has the greatest effect on deprivation with a $\beta$ coefficient of $0.54$, while a lack of educational qualifications is still influential with a $\beta$ coefficient of $0.44$. Bus ridership to work, while less important, is influential with a $\beta$ coefficient of $0.38$. Unlike the Pearson correlation, however, an increase in bus ridership is related to a greater rate of deprivation in the linear regression model.
+:::
+:::
+
+
+#### Assumptions
+
+```{STATA}
+#| collapse: true
+#| code-fold: true
+#| code-summary: "STATA Multiple Linear Regression assumption analysis commands."
+rvfplot
+estat hettest
+vif
+```
+
+Even before testing our assumptions made of our multiple linear regression model, we already know that our data was not normally distributed prior to our analysis. This is confirmed by the Residuals vs. Fitted plot ([@fig-rvf]), which has a strong negative linear trend due to the uniformity of the response variable.
+
+However, the variance of the residuals must also be assessed. Using a Breusch--Pagan/Cook--Weisberg test for heteroskedasticity, we reject the null hypothesis of homoskedasticity and affirm that the residuals are heteroskedastic ([@fig-hettest]).
+
+We can confirm that there is no autocorrelation between our variables by checking the Variance inflation factors (VIFs) of each independent variable ([@fig-vif]), where the greatest value is $2.18$ for `No_qual`.
+
+### Moran's I
+
+Words
+
+### Spatial Multiple Linear Regression
 
 ## Conclusions
 
@@ -218,9 +272,21 @@ comments on difficulties encountered during the investigation and possible avenu
 ![Transformed scatterplot and histogram matrix, with the new distributions of `log_bike`, `log_maori`, and `log_bus` appearing more normal.](scattermatrix_transformed.png){#fig-transform}
 
 ::: aside
-After transformation, `RnkIMDNoEd` is no longer normal. As some entries for `maori`, `bike`, and `bus` were not available (i.e. **NA**), these entries were removed from the dataset.
+After transformation, `RnkIMDNoEd` is no longer normal. As some entries for `maori`, `bike`, and `bus` were not available (e.g. $-\infty$), these entries were removed from the dataset.
 :::
 
-![Words will go here](Screenshot%20from%202023-04-20%2006-24-16.png){#fig-pearsoncorr}
+![Output of the Pearson correlation from STATA. The key is included at the top left.](Screenshot%20from%202023-04-20%2006-24-16.png){#fig-spearmancorr}
+
+![Output of the first multiple linear regression in STATA.](Screenshot%20from%202023-04-20%2006-49-02.png){#fig-ols1}
+
+![Output of the second multiple linear regression STATA (`drive_priv` removed).](Screenshot%20from%202023-04-20%2006-52-56.png){#fig-ols2}
+
+![Output of the third multiple linear regression in STATA (`log_bike` removed).](Screenshot%20from%202023-04-20%2006-53-21.png){#fig-ols3}
+
+![Residuals versus fitted values plot of the final linear regression model.](rvfplot.jpg){#fig-rvf}
+
+![Results of the Breusch--Pagan/Cook--Weisberg test for heteroskedasticity from STATA.](hettest.png){#fig-hettest}
+
+![Variance inflation factor output of the final linear regression model.](vif.png){#fig-vif}
 
 ## Works Cited

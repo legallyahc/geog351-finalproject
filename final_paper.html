@@ -112,6 +112,9 @@ div.csl-indent {
   <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and discussion</a>
   <ul class="collapse">
   <li><a href="#spearman-correlation-1" id="toc-spearman-correlation-1" class="nav-link" data-scroll-target="#spearman-correlation-1">Spearman Correlation</a></li>
+  <li><a href="#multiple-linear-regression-1" id="toc-multiple-linear-regression-1" class="nav-link" data-scroll-target="#multiple-linear-regression-1">Multiple Linear Regression</a></li>
+  <li><a href="#morans-i-1" id="toc-morans-i-1" class="nav-link" data-scroll-target="#morans-i-1">Moran’s I</a></li>
+  <li><a href="#spatial-multiple-linear-regression-1" id="toc-spatial-multiple-linear-regression-1" class="nav-link" data-scroll-target="#spatial-multiple-linear-regression-1">Spatial Multiple Linear Regression</a></li>
   </ul></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   <li><a href="#appendix-1.-figures" id="toc-appendix-1.-figures" class="nav-link" data-scroll-target="#appendix-1.-figures">Appendix 1. Figures</a></li>
@@ -160,7 +163,6 @@ div.csl-indent {
 </section>
 <section id="methods" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
-<p>This section describes - What is the data set analysed - What is the number of variables used and number of cases (number of points in plots) - Give a detailed definition of all the variables you will analyze (nominal, ordinal, interval, ratio), how is it defined? - What methods will be used for each research objective / hypothesis</p>
 <section id="data-sources" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="data-sources">Data sources</h3>
 <div class="cell">
@@ -282,7 +284,6 @@ div.csl-indent {
 <section id="spearman-correlation" class="level4">
 <h4 class="anchored" data-anchor-id="spearman-correlation">Spearman Correlation</h4>
 <p>The Spearman Correlation is a non-parametric test of correlation, requiring only that each sample is independent from each other. It accepts Ordinal, Interval, and Ratio level data. It will be run on each predictor variable and the response variable to assess the predictors’ correlation to the response and any potential collinearity. I also used Bonferroni p-value correction to correct the significance value of any of the many comparisons I made.</p>
-<p>If collinearity appears to be an issue, the relationship between the predictors will be further investigated with a Pearson Correlation test, which requires that the data is independent, interval or ratio level, and exhibit a linear relationship.</p>
 </section>
 <section id="multiple-linear-regression" class="level4">
 <h4 class="anchored" data-anchor-id="multiple-linear-regression">Multiple Linear Regression</h4>
@@ -309,11 +310,78 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">spearman</span> rnkimdnoed no_qual drive_priv log_bus masters_ anyuni log_maori log_bike, <span class="kw">stats</span>(rho <span class="kw">obs</span> <span class="kw">p</span>) bonferroni</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>The results of the Spearman correlation are visible in <a href="#fig-pearsoncorr">Figure&nbsp;4</a>. As we can see from the STATA output, the comparison is limited by the number of observations in <code>log_bus</code> (4669 observations). Every corresponding correlation is significant at the 95% confidence level aside from <code>log_maori</code> and <code>log_bike</code>.</p>
+<p>The results of the Spearman correlation are visible in <a href="#fig-spearmancorr">Figure&nbsp;4</a>. As we can see from the STATA output, the comparison is limited by the number of observations in <code>log_bus</code> (4669 observations). Every corresponding correlation is significant at the 95% confidence level aside from <code>log_maori</code> and <code>log_bike</code>. However, <code>AnyUni</code> and <code>Master_</code> have a Pearson correlation of more than <span class="math inline">\(0.9\)</span> with <code>No_qual</code>, which indicates that these variables are likely autocorrelated. As <code>No_qual</code> has the greatest correlation with <code>RnkIMDNoEd</code>, it will preserved while <code>AnyUni</code> and <code>Master_</code> are excluded from further analysis.</p>
 
 <div class="no-row-height column-margin column-container"><div class="">
-<p>After a logistic transformation, any zero values receive a value of <span class="math inline">\(-\infty\)</span>.</p>
-</div></div></section>
+<p>After a logistic transformation any zero values receive a value of <span class="math inline">\(-\infty\)</span> and were thus excluded from analysis.</p>
+</div></div><p>From our Spearman correlation, we can conclude that a higher rate of no of educational qualifications is related to a higher rate of deprivation, while a greater amount of any university education is correlated to a lower rate of deprivation. Somewhat confusingly, any amount of university education is more correlated to a lower rate of deprivation than only those with a graduate degree or beyond (Spearman correlation coefficient of <span class="math inline">\(-0.5622\)</span> to <span class="math inline">\(-0.5244\)</span>). Maori status is significantly related to a higher rate of deprivation with a coefficient of <span class="math inline">\(0.6945\)</span>. In contrast to my original hypothesis, greater modal share of driving a private vehicle to work is related to a higher rate of deprivation (coefficient of <span class="math inline">\(0.3521\)</span>). Active transportation (in the form of riding a bike or taking a public bus) is linked to lower rates of deprivation, with the log transform of these variables having a correlation coefficient of <span class="math inline">\(-0.0472\)</span> and <span class="math inline">\(-0.0792\)</span> respectively.</p>
+</section>
+<section id="multiple-linear-regression-1" class="level3">
+<h3 class="anchored" data-anchor-id="multiple-linear-regression-1">Multiple Linear Regression</h3>
+<section id="models" class="level4">
+<h4 class="anchored" data-anchor-id="models">Models</h4>
+<div class="cell">
+<details>
+<summary>STATA Multiple Linear Regression commands.</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">regress</span> rnkimdnoed no_qual drive_priv log_bus log_maori log_bike, beta</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">regress</span> rnkimdnoed no_qual log_bus log_maori log_bike, beta</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="kw">regress</span> rnkimdnoed no_qual log_bus log_maori, beta</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The initial regression model is visible at <a href="#fig-ols1">Figure&nbsp;5</a>. Here, both <code>Drive_priv</code> and <code>log_bike</code> are not significant, though <code>Drive_priv</code> is more so, and was thus excluded from the next model, visible in <a href="#fig-ols2">Figure&nbsp;6</a>. As <code>log_bike</code> still has an insignificant p-value, and was excluded. The final model, visible in <a href="#fig-ols3">Figure&nbsp;7</a>, has an adjusted <span class="math inline">\(R^2\)</span> of <span class="math inline">\(0.6156\)</span> and a <span class="math inline">\(\sqrt{MSE}\)</span> of <span class="math inline">\(1118.6\)</span>. I believe that this is a reasonable model for an ordinal response variable, with a relatively high <span class="math inline">\(R^2\)</span> though the <span class="math inline">\(\sqrt{MSE}\)</span> is rather high because of the uniformly distributed response variable.</p>
+<div class="columns">
+<div class="column" style="width:45%;">
+<table class="table">
+<thead>
+<tr class="header">
+<th>Predictors</th>
+<th>Beta Coefficients</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>no_qual</code></td>
+<td>0.4358954</td>
+</tr>
+<tr class="even">
+<td><code>log_bus</code></td>
+<td>0.3789292</td>
+</tr>
+<tr class="odd">
+<td><code>log_maori</code></td>
+<td>0.5379429</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:50%;">
+<p>We can now consider the combined influence of mode of transport, educational attainment, and Maori status on deprivation. Maori status has the greatest effect on deprivation with a <span class="math inline">\(\beta\)</span> coefficient of <span class="math inline">\(0.54\)</span>, while a lack of educational qualifications is still influential with a <span class="math inline">\(\beta\)</span> coefficient of <span class="math inline">\(0.44\)</span>. Bus ridership to work, while less important, is influential with a <span class="math inline">\(\beta\)</span> coefficient of <span class="math inline">\(0.38\)</span>. Unlike the Pearson correlation, however, an increase in bus ridership is related to a greater rate of deprivation in the linear regression model.</p>
+</div>
+</div>
+</section>
+<section id="assumptions" class="level4">
+<h4 class="anchored" data-anchor-id="assumptions">Assumptions</h4>
+<div class="cell">
+<details>
+<summary>STATA Multiple Linear Regression assumption analysis commands.</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">rvfplot</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">estat</span> <span class="kw">hettest</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="kw">vif</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Even before testing our assumptions made of our multiple linear regression model, we already know that our data was not normally distributed prior to our analysis. This is confirmed by the Residuals vs.&nbsp;Fitted plot (<a href="#fig-rvf">Figure&nbsp;8</a>), which has a strong negative linear trend due to the uniformity of the response variable.</p>
+<p>However, the variance of the residuals must also be assessed. Using a Breusch–Pagan/Cook–Weisberg test for heteroskedasticity, we reject the null hypothesis of homoskedasticity and affirm that the residuals are heteroskedastic (<a href="#fig-hettest">Figure&nbsp;9</a>).</p>
+<p>We can confirm that there is no autocorrelation between our variables by checking the Variance inflation factors (VIFs) of each independent variable (<a href="#fig-vif">Figure&nbsp;10</a>), where the greatest value is <span class="math inline">\(2.18\)</span> for <code>No_qual</code>.</p>
+</section>
+</section>
+<section id="morans-i-1" class="level3">
+<h3 class="anchored" data-anchor-id="morans-i-1">Moran’s I</h3>
+<p>Words</p>
+</section>
+<section id="spatial-multiple-linear-regression-1" class="level3">
+<h3 class="anchored" data-anchor-id="spatial-multiple-linear-regression-1">Spatial Multiple Linear Regression</h3>
+</section>
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
@@ -341,11 +409,47 @@ div.csl-indent {
 </div>
 
 <div class="no-row-height column-margin column-container"><div class="">
-<p>After transformation, <code>RnkIMDNoEd</code> is no longer normal. As some entries for <code>maori</code>, <code>bike</code>, and <code>bus</code> were not available (i.e.&nbsp;<strong>NA</strong>), these entries were removed from the dataset.</p>
-</div></div><div id="fig-pearsoncorr" class="quarto-figure quarto-figure-center anchored">
+<p>After transformation, <code>RnkIMDNoEd</code> is no longer normal. As some entries for <code>maori</code>, <code>bike</code>, and <code>bus</code> were not available (e.g.&nbsp;<span class="math inline">\(-\infty\)</span>), these entries were removed from the dataset.</p>
+</div></div><div id="fig-spearmancorr" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="Screenshot%20from%202023-04-20%2006-24-16.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">Figure&nbsp;4: Words will go here</figcaption><p></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;4: Output of the Pearson correlation from STATA. The key is included at the top left.</figcaption><p></p>
+</figure>
+</div>
+<div id="fig-ols1" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Screenshot%20from%202023-04-20%2006-49-02.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;5: Output of the first multiple linear regression in STATA.</figcaption><p></p>
+</figure>
+</div>
+<div id="fig-ols2" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Screenshot%20from%202023-04-20%2006-52-56.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;6: Output of the second multiple linear regression STATA (<code>drive_priv</code> removed).</figcaption><p></p>
+</figure>
+</div>
+<div id="fig-ols3" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Screenshot%20from%202023-04-20%2006-53-21.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;7: Output of the third multiple linear regression in STATA (<code>log_bike</code> removed).</figcaption><p></p>
+</figure>
+</div>
+<div id="fig-rvf" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="rvfplot.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;8: Residuals versus fitted values plot of the final linear regression model.</figcaption><p></p>
+</figure>
+</div>
+<div id="fig-hettest" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="hettest.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;9: Results of the Breusch–Pagan/Cook–Weisberg test for heteroskedasticity from STATA.</figcaption><p></p>
+</figure>
+</div>
+<div id="fig-vif" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="vif.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;10: Variance inflation factor output of the final linear regression model.</figcaption><p></p>
 </figure>
 </div>
 </section>

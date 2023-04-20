@@ -121,5 +121,3 @@ analysis %>%
   as.numeric()
 
 lapply(analysis, stats::shapiro.test)
-
-
