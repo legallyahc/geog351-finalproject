@@ -106,9 +106,20 @@ analysis <- analysis %>%
 library(GGally)
 
 analysis %>%
-  select(RnkIMDNoEd, No_qual, Maori, log_maori, Drive_priv, Bus, log_bus, Masters_, AnyUni) %>%
+  write_csv(., file = "selectedvariables.csv")
+
   ggpairs()
 colnames(analysis)
 library(tinytex)
 
 library(distill)
+unique(analysis$log_maori)
+
+analysis %>%
+  select(all_of(colname)) %>%
+  c() %>%
+  as.numeric()
+
+lapply(analysis, stats::shapiro.test)
+
+

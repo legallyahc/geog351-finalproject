@@ -2,15 +2,22 @@
 title: "A geographical statistical approach to the 2018 New Zealand Index of Multiple Deprevation"
 subtitle: "GEOG 351: Quantitative Analysis"
 author: "Alice Clauss (260945446)"
-format: html
+date: 2023-04-20
+date-format: iso
+format: 
+  html:
+    toc: true
+    toc-location: left
+    link-external-icon: true
+    link-external-newwindow: true
 bibliography: references.bib
 ---
 
+View the source code for this project [here](https://github.com/legallyahc/geog351-finalproject).
+
 ## Introduction
 
-Short section (1 page). A general statement about which variables you are investigating and how/why existing theory (or your own ideas) predict that they may be related. This section presents your chosen general research questions and explains the general rationale behind them. This section briefly provides the reader with an overview of the study questions; include a very brief summary to what relevant research has been done before
-
-This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprivation in New Zealand. Greater active transportation to school has been linked to higher rates of material and social deprivation in Quebec [@cutumisu2014]. Thus, I believe that active transportation (such as cycling and public transit use) will be linked to a higher rank of multiple deprivation. In the literature, deprivation is typically used as a predictor of educational attainment, rather than education determining deprivation [@cooper2003, @shuttleworth1995]. However, I believe that education and deprivation exhibit a positive feedback (i.e. as educational attainment decreases, material deprivation increases, which decreases educational attainment), and thus chose to investigate to what degree educational attainment influences deprivation. Furthermore, in New Zealand, ethnic-density of Maori has been shown to have a protective effect on health, but this is concealed by the impact of the higher rates of deprivation that Maori experience [@bécares2013]. I wanted to confirm the close link between Maori status and deprivation already established in the literature as well as see if this could be mitigated by education and mode of transportation.
+This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprivation in New Zealand. Greater active transportation to school has been linked to higher rates of material and social deprivation in Quebec [@cutumisu2014]. Thus, I believe that active transportation (such as cycling and public transit use) will be linked to a higher rank of multiple deprivation. In the literature, deprivation is typically used as a predictor of educational attainment, rather than education determining deprivation [@cooper2003; @shuttleworth1995]. However, I believe that education and deprivation exhibit a positive feedback (i.e. as educational attainment decreases, material deprivation increases, which decreases educational attainment), and thus chose to investigate to what degree educational attainment influences deprivation. Furthermore, in New Zealand, ethnic-density of Maori has been shown to have a protective effect on health, but this is concealed by the impact of the higher rates of deprivation that Maori experience [@bécares2013]. I wanted to confirm the close link between Maori status and deprivation already established in the literature as well as see if this could be mitigated by education and mode of transportation. Furthermore, I wanted to see if there was a spatial relationship for deprivation in New Zealand.
 
 ## Methods
 
@@ -27,7 +34,7 @@ library(tidyverse)
 imd18 <- readxl::read_excel("IMD2018.xlsx", sheet = "IMD18") # Import data
 ```
 
-The 2018 New Zealand Index of Multiple Deprivation (IMD) is a weighted index of deprivation as determined by measures of employment, income, crime, housing, health, education, and access as seen in @fig-IMD [@exeter2018]. It contains variables for ranking by each of these measures and different computations of the IMD that exclude each category (e.g. the IMD without any of the education inputs). For my study I chose to use the Index of Multiple Deprivation that excluded educational data to maintain independence among my variables.
+The 2018 New Zealand Index of Multiple Deprivation (IMD) is a weighted index of deprivation as determined by measures of employment, income, crime, housing, health, education, and access as seen in [@fig-IMD] [@exeter2018]. Each observation is a "Data zone", which corresponds to the 2013 New Zealand Census Unit, and ordinal level data displaying the relative rank among all Data zones. It contains variables for ranking by each of these measures and different computations of the IMD that exclude each category (e.g. the IMD without any of the education inputs). For my study I chose to use the Index of Multiple Deprivation that excluded educational data to maintain independence among my variables. It contains 6181 unique observations.
 
 ```{r Census data}
 #| collapse: true
@@ -91,7 +98,7 @@ vars <- vars %>%
 New Zealand uses a unique method of classifying education attainment, with a 7 level certificate / diploma system. I compiled this information to be as comparable as possible to the Canadian system of "Secondary", "Some University", "Bachelors", "Graduate", and "Post-graduate". I also combined these to make variables that combined any university experience and any university degree past a Bachelors.
 :::
 
-To answer my research questions, I used data from the 2018 New Zealand Census relating to educational attainment, mode of transport to work, and Maori status [@statsnz2020].
+To answer my research questions linking education, mode of transport, and Maori status to deprivation, I used data from the 2018 New Zealand Census at the Statistical Area 2 (SA2) geographic level [@statsnz2020]. Unfortunately, the SA2 zones are larger than the Data zones of the IMD, with the census data having 2254 unique entries.
 
 ```{r setup}
 #| collapse: true
@@ -99,18 +106,85 @@ To answer my research questions, I used data from the 2018 New Zealand Census re
 #| code-fold: true
 #| code-summary: "Spatially joined data import code."
 
-analysis <- read_csv("data.csv")
+analysis <- read_csv("data.csv") %>% 
+  select(RnkIMDNoEd, No_qual, Maori, Drive_priv, Bus, Masters_, AnyUni, Bicycle1) %>% 
+  rename(
+    Bike = Bicycle1
+  )
   # Import spatially joined data
+```
+
+To combine these two data sources, I used a spatial join in ArcGIS Pro with the *greatest overlap* method, joining the census data to the IMD. This resulted in some of the resulting entries having the same census data variables, but unique deprivation values, which lead to inherent spatial correlation among these census variables. This resulted in 6181 different observations in the final dataset.
+
+### Variables
+
+::: columns
+::: {.column width="50%"}
+**Response**
+
+`RnkIMDNoEdu`: Ranked index of multiple deprivation that was made without education data (Ordinal).
+:::
+
+::: {.column width="50%"}
+**Predictors**
+
+`No_qual`: % of people with no proof of education (Ratio).
+
+`AnyUni`: % of people who have any university education (Ratio).
+
+`Master_`: % of people with post-bachelor's education (Ratio).
+
+`Maori`: % of people with Maori heritage (Ratio).
+
+`Drive_priv`: % of people who drive their own vehicle to work (Ratio).
+
+`Bus`: % of people who take the bus to work (Ratio).
+
+`Bike`: % of people who bike to work (Ratio).
+:::
+:::
+
+Only `No_qual` and `AnyUni` appear to be normally distributed, with `RnkIMDNoEdu` uniformly distributed, `Master_` right skewed, and `Drive_priv` left skewed (see @fig-notransform). While I would use a Shapiro-Wilk test to confirm their lack of normality, it is invalid for samples with $> 5000$ observations.
+
+`Bike`, `Bus`, and `Maori` appear to have a logistic distribution and were thus transformed.
+
+```{r log transform}
+#| collapse: true
+#| output: false
+#| code-fold: true
+#| code-summary: "Logistic transformation code of `Bike`, `Bus`, and `Maori`."
 analysis <- analysis %>%
   mutate(
     log_maori = log(Maori),
     log_bus = log(Bus),
-    log_bike = log(Bicycle1)
+    log_bike = log(Bike)
   )
   # Logarithmic transform on some variables
 ```
 
-Spatial join
+After this transformation, `Bike` and `Maori` appear more normally distributed, while `Bus` has a very large number of values at one point and is otherwise uniformly distributed (see @fig-transform).
+
+### Analysis methods
+
+All relationships will be investigated through a Spearman correlation and a multiple linear regression model, with the potential spatial correlation of multiple deprivation in New Zealand investigated through Moran's I and, if significantly related, evaluated in a spatial multiple linear regression model.
+
+#### Spearman Correlation
+
+The Spearman Correlation is a non-parametric test of correlation, requiring only that each sample is independent from each other. It accepts Ordinal, Interval, and Ratio level data. It will be run on each predictor variable and the response variable to assess the predictors' correlation to the response and any potential collinearity.
+
+If collinearity appears to be an issue, the relationship between the predictors will be further investigated with a Pearson Correlation test, which requires that the data is independent, interval or ratio level, and exhibit a linear relationship.
+
+#### Multiple Linear Regression
+
+The relationship between the variables will then be investigated with an Ordinary Least Squares multiple linear regression, with the predictor variables determining the response. This assumes that the relationship is linear, the predictors are normally distributed, there is no collinearity among the predictors, the residuals are homoskedastic, and the residuals are normally distributed. We can ignore the requirement of normality for the predictors due to the large number of observations and will test our assumptions after the model.
+
+#### Moran's I
+
+Moran's I investigates the spatial autocorrelation of a variable, with a positive value indicating positive spatial autocorrelation. For this dataset, `RnkIMDNoEd` will be investigated due to its lack of duplication of variables and to answer our initial research question.
+
+#### Spatial Multiple Linear Regression
+
+The final multiple linear regression model will be run in GeoDa using a Queen weights to test the significance of spatial lag and spatial error. If both are significant, the more significant test will determine the model to be run. For a spatial lag model, this means that a spatially significant lag of our result variable is added to our predictors. For a spatial error model, any potentially spatially dependent errors are resolved.
 
 ## Results and discussion
 
@@ -123,5 +197,13 @@ comments on difficulties encountered during the investigation and possible avenu
 ## Appendix 1. Figures
 
 ![Weighting of the 2018 IMD [@exeter2018].](final_pres_wrap/IMD_2018_development.png){#fig-IMD}
+
+![Initial scatterplot and histogram matrix for the selected variables. Please disregard the stated correlation values.](scattermatrix_notransform.png){#fig-notransform}
+
+![Transformed scatterplot and histogram matrix, with the new distributions of `log_bike`, `log_maori`, and `log_bus` appearing more normal.](scattermatrix_transformed.png){#fig-transform}
+
+::: aside
+After transformation, `RnkIMDNoEd` is no longer normal. As some entries for `maori`, `bike`, and `bus` were not available (i.e. **NA**), these entries were removed from the dataset.
+:::
 
 ## Works Cited
