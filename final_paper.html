@@ -109,7 +109,10 @@ div.csl-indent {
   <li><a href="#variables" id="toc-variables" class="nav-link" data-scroll-target="#variables">Variables</a></li>
   <li><a href="#analysis-methods" id="toc-analysis-methods" class="nav-link" data-scroll-target="#analysis-methods">Analysis methods</a></li>
   </ul></li>
-  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and discussion</a></li>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and discussion</a>
+  <ul class="collapse">
+  <li><a href="#spearman-correlation-1" id="toc-spearman-correlation-1" class="nav-link" data-scroll-target="#spearman-correlation-1">Spearman Correlation</a></li>
+  </ul></li>
   <li><a href="#conclusions" id="toc-conclusions" class="nav-link" data-scroll-target="#conclusions">Conclusions</a></li>
   <li><a href="#appendix-1.-figures" id="toc-appendix-1.-figures" class="nav-link" data-scroll-target="#appendix-1.-figures">Appendix 1. Figures</a></li>
   <li><a href="#works-cited" id="toc-works-cited" class="nav-link" data-scroll-target="#works-cited">Works Cited</a></li>
@@ -153,7 +156,7 @@ div.csl-indent {
 <p>View the source code for this project <a href="https://github.com/legallyahc/geog351-finalproject">here</a>.</p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprivation in New Zealand. Greater active transportation to school has been linked to higher rates of material and social deprivation in Quebec <span class="citation" data-cites="cutumisu2014">(<a href="#ref-cutumisu2014" role="doc-biblioref">Cutumisu et al. 2014</a>)</span>. Thus, I believe that active transportation (such as cycling and public transit use) will be linked to a higher rank of multiple deprivation. In the literature, deprivation is typically used as a predictor of educational attainment, rather than education determining deprivation <span class="citation" data-cites="cooper2003 shuttleworth1995">(<a href="#ref-cooper2003" role="doc-biblioref">Cooper, Lloyd-Reason, and Wall 2003</a>; <a href="#ref-shuttleworth1995" role="doc-biblioref">Shuttleworth 1995</a>)</span>. However, I believe that education and deprivation exhibit a positive feedback (i.e.&nbsp;as educational attainment decreases, material deprivation increases, which decreases educational attainment), and thus chose to investigate to what degree educational attainment influences deprivation. Furthermore, in New Zealand, ethnic-density of Maori has been shown to have a protective effect on health, but this is concealed by the impact of the higher rates of deprivation that Maori experience <span class="citation" data-cites="bécares2013">(<a href="#ref-bécares2013" role="doc-biblioref">Bécares, Cormack, and Harris 2013</a>)</span>. I wanted to confirm the close link between Maori status and deprivation already established in the literature as well as see if this could be mitigated by education and mode of transportation. Furthermore, I wanted to see if there was a spatial relationship for deprivation in New Zealand.</p>
+<p>This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprivation in New Zealand. Greater active transportation to school has been linked to higher rates of material and social deprivation in Quebec <span class="citation" data-cites="cutumisu2014">(<a href="#ref-cutumisu2014" role="doc-biblioref">Cutumisu et al. 2014</a>)</span>. Thus, I believe that greater use of active transportation (such as cycling and public transit use) will be linked to a less deprivation. Furthermore, increased car usage can indiciate a greater lever of affluence (due to the money required for maintenance and gas), leading to my prediction that greater private car usage will lead to lower deprivation. In the literature, deprivation is typically used as a predictor of educational attainment, rather than education determining deprivation <span class="citation" data-cites="cooper2003 shuttleworth1995">(<a href="#ref-cooper2003" role="doc-biblioref">Cooper, Lloyd-Reason, and Wall 2003</a>; <a href="#ref-shuttleworth1995" role="doc-biblioref">Shuttleworth 1995</a>)</span>. However, I believe that education and deprivation exhibit a positive feedback (i.e.&nbsp;as educational attainment decreases, material deprivation increases, which decreases educational attainment), and thus chose to investigate to what degree educational attainment influences deprivation. In New Zealand, ethnic-density of Maori has been shown to have a protective effect on health, but this is concealed by the impact of the higher rates of deprivation that Maori experience <span class="citation" data-cites="bécares2013">(<a href="#ref-bécares2013" role="doc-biblioref">Bécares, Cormack, and Harris 2013</a>)</span>. I wanted to confirm the close link between Maori status and deprivation already established in the literature as well as see if this could be mitigated by education and mode of transportation. With my focus on mode of transport, education, and Maori status, I would like to see how well they predict deprivation and which predictors are most influential. As deprivation is often spatially autocorreleated, I will investigate if this holds for New Zealand <span class="citation" data-cites="bécares2013">(<a href="#ref-bécares2013" role="doc-biblioref">Bécares, Cormack, and Harris 2013</a>)</span>.</p>
 </section>
 <section id="methods" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
@@ -278,7 +281,7 @@ div.csl-indent {
 <p>All relationships will be investigated through a Spearman correlation and a multiple linear regression model, with the potential spatial correlation of multiple deprivation in New Zealand investigated through Moran’s I and, if significantly related, evaluated in a spatial multiple linear regression model.</p>
 <section id="spearman-correlation" class="level4">
 <h4 class="anchored" data-anchor-id="spearman-correlation">Spearman Correlation</h4>
-<p>The Spearman Correlation is a non-parametric test of correlation, requiring only that each sample is independent from each other. It accepts Ordinal, Interval, and Ratio level data. It will be run on each predictor variable and the response variable to assess the predictors’ correlation to the response and any potential collinearity.</p>
+<p>The Spearman Correlation is a non-parametric test of correlation, requiring only that each sample is independent from each other. It accepts Ordinal, Interval, and Ratio level data. It will be run on each predictor variable and the response variable to assess the predictors’ correlation to the response and any potential collinearity. I also used Bonferroni p-value correction to correct the significance value of any of the many comparisons I made.</p>
 <p>If collinearity appears to be an issue, the relationship between the predictors will be further investigated with a Pearson Correlation test, which requires that the data is independent, interval or ratio level, and exhibit a linear relationship.</p>
 </section>
 <section id="multiple-linear-regression" class="level4">
@@ -295,9 +298,22 @@ div.csl-indent {
 </section>
 </section>
 </section>
-<section id="results-and-discussion" class="level2">
+<section id="results-and-discussion" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="results-and-discussion">Results and discussion</h2>
 <p>Here you develop, in turn, your hypotheses rela5ng to the data, present the results (output tables and graphs) and describe your conclusions or each hypothesis. Deal with each hypothesis fully, in turn, and in some logical sequence. Before you present the results and your interpretation for any test, you should describe each particular hypothesis (which variable are involved in that hypothesis , what is the predicted sign(positive or negative) of effects, etc, what is the test, what does the output tell you?). Then move on to next hypothesis, etc. All graphs, tables and figures should be numbered, referenced in the appropriate place in the text and placed in appendix. You should also include a discussion of post-estimation diagnostics and actions to be taken if basic assumptions are violated. Appendix pages for all graphics are not limited: do not shrink and cram too many plots and output tables per page.</p>
+<section id="spearman-correlation-1" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="spearman-correlation-1">Spearman Correlation</h3>
+<div class="cell">
+<details>
+<summary>STATA Spearman Correlation command.</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">spearman</span> rnkimdnoed no_qual drive_priv log_bus masters_ anyuni log_maori log_bike, <span class="kw">stats</span>(rho <span class="kw">obs</span> <span class="kw">p</span>) bonferroni</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The results of the Spearman correlation are visible in <a href="#fig-pearsoncorr">Figure&nbsp;4</a>. As we can see from the STATA output, the comparison is limited by the number of observations in <code>log_bus</code> (4669 observations). Every corresponding correlation is significant at the 95% confidence level aside from <code>log_maori</code> and <code>log_bike</code>.</p>
+
+<div class="no-row-height column-margin column-container"><div class="">
+<p>After a logistic transformation, any zero values receive a value of <span class="math inline">\(-\infty\)</span>.</p>
+</div></div></section>
 </section>
 <section id="conclusions" class="level2">
 <h2 class="anchored" data-anchor-id="conclusions">Conclusions</h2>
@@ -326,7 +342,13 @@ div.csl-indent {
 
 <div class="no-row-height column-margin column-container"><div class="">
 <p>After transformation, <code>RnkIMDNoEd</code> is no longer normal. As some entries for <code>maori</code>, <code>bike</code>, and <code>bus</code> were not available (i.e.&nbsp;<strong>NA</strong>), these entries were removed from the dataset.</p>
-</div></div></section>
+</div></div><div id="fig-pearsoncorr" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="Screenshot%20from%202023-04-20%2006-24-16.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;4: Words will go here</figcaption><p></p>
+</figure>
+</div>
+</section>
 <section id="works-cited" class="level2 unnumbered">
 
 

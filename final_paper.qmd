@@ -17,7 +17,7 @@ View the source code for this project [here](https://github.com/legallyahc/geog3
 
 ## Introduction
 
-This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprivation in New Zealand. Greater active transportation to school has been linked to higher rates of material and social deprivation in Quebec [@cutumisu2014]. Thus, I believe that active transportation (such as cycling and public transit use) will be linked to a higher rank of multiple deprivation. In the literature, deprivation is typically used as a predictor of educational attainment, rather than education determining deprivation [@cooper2003; @shuttleworth1995]. However, I believe that education and deprivation exhibit a positive feedback (i.e. as educational attainment decreases, material deprivation increases, which decreases educational attainment), and thus chose to investigate to what degree educational attainment influences deprivation. Furthermore, in New Zealand, ethnic-density of Maori has been shown to have a protective effect on health, but this is concealed by the impact of the higher rates of deprivation that Maori experience [@bécares2013]. I wanted to confirm the close link between Maori status and deprivation already established in the literature as well as see if this could be mitigated by education and mode of transportation. Furthermore, I wanted to see if there was a spatial relationship for deprivation in New Zealand.
+This paper ventures to investigate the links between education, mode of transportation to work, and Maori status to multiple deprivation in New Zealand. Greater active transportation to school has been linked to higher rates of material and social deprivation in Quebec [@cutumisu2014]. Thus, I believe that greater use of active transportation (such as cycling and public transit use) will be linked to a less deprivation. Furthermore, increased car usage can indiciate a greater lever of affluence (due to the money required for maintenance and gas), leading to my prediction that greater private car usage will lead to lower deprivation. In the literature, deprivation is typically used as a predictor of educational attainment, rather than education determining deprivation [@cooper2003; @shuttleworth1995]. However, I believe that education and deprivation exhibit a positive feedback (i.e. as educational attainment decreases, material deprivation increases, which decreases educational attainment), and thus chose to investigate to what degree educational attainment influences deprivation. In New Zealand, ethnic-density of Maori has been shown to have a protective effect on health, but this is concealed by the impact of the higher rates of deprivation that Maori experience [@bécares2013]. I wanted to confirm the close link between Maori status and deprivation already established in the literature as well as see if this could be mitigated by education and mode of transportation. With my focus on mode of transport, education, and Maori status, I would like to see how well they predict deprivation and which predictors are most influential. As deprivation is often spatially autocorreleated, I will investigate if this holds for New Zealand [@bécares2013].
 
 ## Methods
 
@@ -170,7 +170,7 @@ All relationships will be investigated through a Spearman correlation and a mult
 
 #### Spearman Correlation
 
-The Spearman Correlation is a non-parametric test of correlation, requiring only that each sample is independent from each other. It accepts Ordinal, Interval, and Ratio level data. It will be run on each predictor variable and the response variable to assess the predictors' correlation to the response and any potential collinearity.
+The Spearman Correlation is a non-parametric test of correlation, requiring only that each sample is independent from each other. It accepts Ordinal, Interval, and Ratio level data. It will be run on each predictor variable and the response variable to assess the predictors' correlation to the response and any potential collinearity. I also used Bonferroni p-value correction to correct the significance value of any of the many comparisons I made.
 
 If collinearity appears to be an issue, the relationship between the predictors will be further investigated with a Pearson Correlation test, which requires that the data is independent, interval or ratio level, and exhibit a linear relationship.
 
@@ -190,6 +190,21 @@ The final multiple linear regression model will be run in GeoDa using a Queen we
 
 Here you develop, in turn, your hypotheses rela5ng to the data, present the results (output tables and graphs) and describe your conclusions or each hypothesis. Deal with each hypothesis fully, in turn, and in some logical sequence. Before you present the results and your interpretation for any test, you should describe each particular hypothesis (which variable are involved in that hypothesis , what is the predicted sign(positive or negative) of effects, etc, what is the test, what does the output tell you?). Then move on to next hypothesis, etc. All graphs, tables and figures should be numbered, referenced in the appropriate place in the text and placed in appendix. You should also include a discussion of post-estimation diagnostics and actions to be taken if basic assumptions are violated. Appendix pages for all graphics are not limited: do not shrink and cram too many plots and output tables per page.
 
+### Spearman Correlation
+
+```{STATA}
+#| collapse: true
+#| code-fold: true
+#| code-summary: "STATA Spearman Correlation command."
+spearman rnkimdnoed no_qual drive_priv log_bus masters_ anyuni log_maori log_bike, stats(rho obs p) bonferroni
+```
+
+The results of the Spearman correlation are visible in @fig-pearsoncorr. As we can see from the STATA output, the comparison is limited by the number of observations in `log_bus` (4669 observations). Every corresponding correlation is significant at the 95% confidence level aside from `log_maori` and `log_bike`.
+
+::: aside
+After a logistic transformation, any zero values receive a value of $-\infty$.
+:::
+
 ## Conclusions
 
 comments on difficulties encountered during the investigation and possible avenues for future research.
@@ -205,5 +220,7 @@ comments on difficulties encountered during the investigation and possible avenu
 ::: aside
 After transformation, `RnkIMDNoEd` is no longer normal. As some entries for `maori`, `bike`, and `bus` were not available (i.e. **NA**), these entries were removed from the dataset.
 :::
+
+![Words will go here](Screenshot%20from%202023-04-20%2006-24-16.png){#fig-pearsoncorr}
 
 ## Works Cited
