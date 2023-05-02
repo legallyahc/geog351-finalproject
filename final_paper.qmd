@@ -267,7 +267,7 @@ Links to deprivation in New Zealand have been investigated before but have taken
 
 ## Appendix 1. Figures
 
-![Weighting of the 2018 IMD [@exeter2018].](final_pres_wrap/IMD_2018_development.png){#fig-IMD}
+![Weighting of the 2018 IMD [@exeter2018].](IMD_2018_development.png){#fig-IMD}
 
 ![Initial scatterplot and histogram matrix for the selected variables. Please disregard the stated correlation values.](scattermatrix_notransform.png){#fig-notransform}
 
